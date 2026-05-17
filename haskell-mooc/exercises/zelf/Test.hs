@@ -34,3 +34,11 @@ guessAge "Hansel" age
     | age > 12 = "Too high!"
     | otherwise = "Correct!"
 guessAge name age = "Wrong name!"  
+
+takeFinal :: Int -> [a] -> [a]
+takeFinal n xs
+    | n < 0 = xs
+    | n >= length xs = xs
+    | otherwise = drop (length xs - n) xs
+
+--takeFinal n xs = if length xs < n then xs else drop (length xs - n) xs  
