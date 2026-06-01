@@ -1,4 +1,4 @@
-module Pal where
+module pal where
 
 import Data.Char
 

@@ -1,4 +1,4 @@
-import Pal
+import pal (isPalindrome) 
 
 -- The interactive program --
 
