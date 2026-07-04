@@ -1,0 +1,59 @@
+
+Classification.hs	14	  instance Identified a => Identified [a] where
+Classification.hs	16	   name (i:is) = name i
+Classification.hs	22	  root (Cl c cls) = c
+Classification.hs	24	  subs (Cl c cls) = cls
+Classification.hs	26	  isBot Bottom =True
+Classification.hs	27	  isBot _      = False
+Classification.hs	28	  recur f e Bottom     = e
+Classification.hs	30	  mapCl f Bottom       = Bottom
+Classification.hs	31	  mapCl f (Cl c cls)   = Cl (f c) (map (mapCl f) cls)
+Classification.hs	34	  preCl (Cl c cls)     = [c] ++ concat (map preCl cls)
+Classification.hs	36	  postCl (Cl c cls)    = concat (map postCl cls) ++ [c]
+Classification.hs	38	  instance Eq a => Eq (Classification a) where
+Classification.hs	39	   Bottom == Bottom = True
+Classification.hs	40	   Cl r cls == Cl r' cls'
+Classification.hs	42	   cl == cl' = False
+Classification.hs	44	  instance Identified a => Identified (Classification a) where
+Classification.hs	45	   name (Cl r cls) = name r
+Classification.hs	46	   name Bottom = "Bottom"
+Classification.hs	51	  instance Show a => Show (Classification a) where
+Classification.hs	53	    = showString (shw "\n  " cls)
+Classification.hs	56	        = chain indent (show r:[shw (indent++"  ") (Cl r cls')
+Classification.hs	58	       shw indent Bottom = ""
+Classification.hs	67	   empty = Bottom
+Classification.hs	75	    where trees = makeClassifications (tuples lcl `isc` tuples rcl)
+Classification.hs	78	    where trees = makeClassifications (tuples lcl>-tuples rcl)
+Classification.hs	82	   uni x Bottom = x
+Classification.hs	83	   uni Bottom y = y
+Classification.hs	111	  isDefinedIn :: Eq a => a -> Classification a -> Bool
+Classification.hs	112	  c `isDefinedIn` Bottom = False
+Classification.hs	119	  restrict :: Eq a => [a] -> [Classification a] -> [Classification a]
+Classification.hs	120	  restrict stayers cls = rd(f cls)
+Classification.hs	132	  insert:: Eq a => Classification a -> Classification a -> Classification a
+Classification.hs	133	  insert wls Bottom = wls
+Classification.hs	134	  insert Bottom cls = cls
+Classification.hs	138	       = error ("insert error!")
+Classification.hs	140	   where up wls' = foldl insert wls' (subs cls)
+Classification.hs	148	  ins:: Eq a => Classification a -> [a] -> Classification a
+Classification.hs	150	  ins Bottom (c:cs) = Cl c [ins Bottom cs]
+Classification.hs	154	   where up cl = ins cl cs
+Classification.hs	158	  insertParChd :: (Show a,Eq a) =>
+Classification.hs	161	   = update up (par==) wls
+Classification.hs	162	     where up wls' = wls' `uni` Cl par [chd]
+Classification.hs	181	  update :: Eq a => (Classification a -> Classification a)
+Classification.hs	183	  update upd c Bottom = Bottom
+Classification.hs	191	  makeClassifications :: Eq a => [(a,a)] -> [Classification a]
+Classification.hs	198	  makeClassificationsF :: Eq b => (a->b) -> [(a,a)] -> [Classification a]
+Classification.hs	207	  locate :: Eq a => a -> Classification a -> Classification a
+Classification.hs	208	  locate c Bottom = Bottom
+Classification.hs	213	  locates :: Eq a => a -> Classification a -> [Classification a]
+Classification.hs	227	   = s classification
+Classification.hs	229	    s (Cl r cls) = Cl r (srt (map s cls))
+Classification.hs	230	    s Bottom     = Bottom
+Classification.hs	237	  u = [("aapje",1),("aapenoot",2),("",3),("mies",4),("mies",5)]
+Classification.hs	242	  index tuples = lookup (makeCly tuples)
+Classification.hs	254	      eqClasses = eqC set
+Classification.hs	257	      eqC = eqCl (take 1.fst)
+Classification.hs	269	  invmakeCly = f ""
+Classification.hs	270	   where f str (Oby y)     = [(str,y)]

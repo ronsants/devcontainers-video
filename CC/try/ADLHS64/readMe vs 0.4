@@ -1,0 +1,24 @@
+Notities bij ADL sources versie 0.4
+
+De distributie bevat:
+ - ADL sources vs 0.4
+ - ADL distributie vs 0.4
+De sources bevatten alle Haskell bestanden (.lhs en .hs), een attributengrammaticabestand (.ag) en een voorbeeldbestand (.adl).
+De distributie bevat executables (.exe en .dll), het runtimepakket (\treemenutils) en zes voorbeeldbestanden.
+
+1. unzip de sources naar een nieuwe directory, bijvoorbeeld: C:\ADL vs.0.2\
+2. compileer:
+     C:\ADL vs.0.2\>  ghc -package text -fallow-undecidable-instances -fglasgow-exts --make CCgen.lhs -o ADL.exe
+3. zet vervolgens ADL.exe op de door jou gekozen binaries directory, bijvoorbeeld C:\ADL\bin\
+     C:\ADL vs.0.2\>  copy ADL.exe \ADL\bin\
+4. zet het graphViz pakket in diezelfde binaries directory:
+     C:\ADL vs.0.2\>  copy neato.exe \ADL\bin\
+     C:\ADL vs.0.2\>  copy *.DLL \ADL\bin\
+5. breid de omgevingsvariabele PATH uit met de binaries directory (dat is START>INSTELLINGEN>CONFIGURATIESCHERM>SYSTEEM in mijn Windows XP systeem)
+
+Opmerking 1: ik werk nog met ghc versie 5.04.3 Sinds enkele maanden is versie 6.2.2 beschikbaar, en daar werkt de bovenstaande procedure niet omdat het package mechanisme iets anders werkt. Ik heb het nog niet uitgezocht en werk intussen vrolijk door met mijn brave 5.04.3.
+
+Opmerking 2: de treemenutils directory en graphViz zijn niet gewijzigd. Om te upgraden van 0.1 naar 0.2 hoef je alleen maar de ADL.exe te vervangen.
+
+Veel plezier.
+Stef

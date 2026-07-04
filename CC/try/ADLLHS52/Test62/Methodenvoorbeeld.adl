@@ -1,0 +1,25 @@
+CONTEXT Metamodels
+PATTERN "Objects"
+CONCEPT Class "A description of a set of objects that share the same attributes, operations." ""
+CONCEPT Object "An object is anything with a lifetime and a location." ""
+CONCEPT Association "A connection between two classes which represents a relationship." ""
+
+ type  :: Object * Class [UNI,TOT]     PRAGMA "The class in which object " " was ".
+ isa   :: Class * Class  [RFX,TRN,ASY] PRAGMA "Every " " is " " as well". 
+ class :: Object * Class [TOT]         PRAGMA "Object " " has type ".
+ type;isa -: class
+  EXPLANATION "Each object is a member of the class in which that object was instantiated"
+ isa;isa -: isa[Class*Class]
+  EXPLANATION "The relation isa is transitive."
+ENDPATTERN
+
+PATTERN "Class Diagram"
+ association :: Class * Class         [] PRAGMA "" " is associated to ".
+ lineTo      :: Association * Class   [UNI,TOT] PRAGMA "Association " " links to ".
+ lineFrom    :: Association * Class   [UNI,TOT] PRAGMA "Association " " links from". 
+ name        :: Association * String  [UNI,TOT] PRAGMA "Association " " is named ".
+ association = lineFrom~ ; lineTo
+  EXPLANATION "An association is represented by a line from one class to another"
+ENDPATTERN
+
+ENDCONTEXT

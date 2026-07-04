@@ -1,0 +1,559 @@
+
+cc_aux.hs@10@  data Architecture = Arch Contexts
+cc_aux.hs@12@  type Concepts  = [Concept]
+cc_aux.hs@14@   C a _ _ == C b _ _ = a==b
+cc_aux.hs@15@   _ == _ = True
+cc_aux.hs@31@   = chain "\n" ([f l " "     ++"  "++chain " " (map (f 6.name) cs)]++
+cc_aux.hs@33@     where l = maximum (map (length.name) cs); f n str = take n (str++forever ' ')
+cc_aux.hs@34@           forever c = c:forever c
+cc_aux.hs@37@   = chain "\n" ([f l " "     ++"  "++chain " " (map (f 6.name) cs)]++
+cc_aux.hs@39@     where l = maximum (map (length.name) cs); f n str = take n (str++forever ' ')
+cc_aux.hs@40@           forever c = c:forever c
+cc_aux.hs@42@  type GenR = Concept->Concept->Bool
+cc_aux.hs@45@   gEq (Anything _) b = True
+cc_aux.hs@46@   gEq a (Anything _) = False
+cc_aux.hs@47@   gEq a b = genE a a b
+cc_aux.hs@55@  instance (Show a,Show b,ABoolAlg a,ABoolAlg b) => ABoolAlg (a,b) where
+cc_aux.hs@56@   (a,a') `gEq` (b,b') = a `gEq` b && a' `gEq` b'
+cc_aux.hs@65@   a `gEq` b = source a `gEq` source b && target a `gEq` target b
+cc_aux.hs@68@   a `gEq` b = source a `gEq` source b && target a `gEq` target b
+cc_aux.hs@71@   a `gEq` b = source a `gEq` source b && target a `gEq` target b
+cc_aux.hs@73@  data ConceptDef= Cd FilePos String String String
+cc_aux.hs@75@   Cd _ n _ _ == Cd _ m _ _ = n==m
+cc_aux.hs@77@   name (Cd _ n _ _) = n
+cc_aux.hs@78@  type ConceptDefs = [ConceptDef]
+cc_aux.hs@79@  data Context   = Ctx String [String] (Inheritance Concept) [Classification Context] Patterns Signatures [ConceptDef]
+cc_aux.hs@81@--   Ctx nm _ _ _ _ _ _ == Ctx nm' _ _ _ _ _ _ = nm == nm'
+cc_aux.hs@82@  type Contexts  = [Context]
+cc_aux.hs@83@  type Link      = [String]
+cc_aux.hs@85@  src            = head
+cc_aux.hs@86@  trg            = last
+cc_aux.hs@87@  type Links     = [Link]
+cc_aux.hs@88@  data Gen       = G Concept Concept                                     deriving Eq
+cc_aux.hs@89@  type Gens      = [Gen]
+cc_aux.hs@90@  data Morphism  = Mph String FilePos [Concept] (Concept,Concept) Signature
+cc_aux.hs@92@  data Signature = Sgn String Concept Concept [Prop] String String String [Link] FilePos
+cc_aux.hs@97@  type Signatures = [Signature]
+cc_aux.hs@98@  type Patterns  = [Pattern]
+cc_aux.hs@100@  pMeaning Uni   = "univalent"
+cc_aux.hs@101@  pMeaning Inj   = "injective"
+cc_aux.hs@102@  pMeaning Sur   = "surjective"
+cc_aux.hs@103@  pMeaning Tot   = "total"
+cc_aux.hs@104@  pMeaning Sym   = "symmetric"
+cc_aux.hs@105@  pMeaning Asy   = "antisymmetric"
+cc_aux.hs@106@  pMeaning Trn   = "transitive"
+cc_aux.hs@107@  pMeaning Rfx   = "reflexive"
+cc_aux.hs@108@  isFunction m   = null ([Uni,Tot]>-multiplicities m)
+cc_aux.hs@110@  data Rule      = Ru Char Expression FilePos Expression String (Concept,Concept) Int
+cc_aux.hs@113@   Ru c antc _ cons _ sgn _ == Ru c' antc' _ cons' _ sgn' _
+cc_aux.hs@114@    = c==c' && sgn==sgn' && antc==antc' && cons==cons'
+cc_aux.hs@115@   Gc _ m expr sgn _ == Gc _ m' expr' sgn' _
+cc_aux.hs@116@    = sgn==sgn' && m==m' && expr==expr'
+cc_aux.hs@117@   _ == _ = False
+cc_aux.hs@118@  type Rules     = [Rule]
+cc_aux.hs@119@  data Pattern   = Pat String Rules Gens Signatures ConceptDefs    -- deriving Show
+cc_aux.hs@120@  data Expression  = Tf Morphism Bool
+cc_aux.hs@128@   Tm m c == Tm m' c' = m==m' && c==c'
+cc_aux.hs@129@   Tf m c == Tf m' c' = m==m' && c==c'
+cc_aux.hs@130@   Tc e c == Tc e' c' = e==e' && c==c'
+cc_aux.hs@132@  type Expressions = [Expression]
+cc_aux.hs@137@   nr x = nr (CC_aux.pos x)
+cc_aux.hs@140@   nr (FilePos (fn,Pos l c,sym)) = l
+cc_aux.hs@141@   pos p = p
+cc_aux.hs@144@   pos (Ru c antc p cons expla sgn nr) = p
+cc_aux.hs@145@   pos (Gc p m expr sgn n)             = p
+cc_aux.hs@146@   nr (Ru c antc p cons expla sgn n)   = n
+cc_aux.hs@147@   nr (Gc p m expr sgn n)              = n
+cc_aux.hs@150@   pos (Mph nm p atts sgn s) = p
+cc_aux.hs@151@   pos (Id p atts c)         = p
+cc_aux.hs@154@   pos (Tm m _) = CC_aux.pos m
+cc_aux.hs@155@   pos (Tf m _) = CC_aux.pos m
+cc_aux.hs@156@   pos (Tc f _) = CC_aux.pos f
+cc_aux.hs@157@   pos (F ts)   = if not (null ts) then CC_aux.pos (head ts) else error "!!Software error 813. Please submit a complete bug report to your dealer"
+cc_aux.hs@158@   pos (Fu fs)  = if not (null fs) then CC_aux.pos (head fs) else error "!!Software error 814. Please submit a complete bug report to your dealer"
+cc_aux.hs@159@   pos (Fi fs)  = if not (null fs) then CC_aux.pos (head fs) else error "!!Software error 815. Please submit a complete bug report to your dealer"
+cc_aux.hs@165@   explain (Ru c antc pos cons expla sgn nr) = expla
+cc_aux.hs@166@   explain (Gc p m expr sgn n)             = ""
+cc_aux.hs@171@  instance Conceptual a => Conceptual [a] where
+cc_aux.hs@172@   conts                                         = rd . concat . map conts
+cc_aux.hs@174@  instance Conceptual a => Conceptual (Classification a) where
+cc_aux.hs@175@   conts                                         = rd . concat . map conts . preCl
+cc_aux.hs@178@   conts (C _ _ os)   = os
+cc_aux.hs@179@   conts (Anything _) = error("Fatal: Anything is Everything...")
+cc_aux.hs@191@  instance Morphical a => Morphical [a] where
+cc_aux.hs@192@   concs                                         = rd . concat . map concs
+cc_aux.hs@193@   conceptdefs                                   = rd . concat . map conceptdefs
+cc_aux.hs@194@   mors                                          = rd . concat . map mors
+cc_aux.hs@195@   signatures                                    = rd . concat . map signatures
+cc_aux.hs@198@   concs       c                                 = [c]
+cc_aux.hs@201@   signatures  c                                 = [Idn c posNone]
+cc_aux.hs@202@   genE        (C c gE cs)                       = gE
+cc_aux.hs@203@   genE        (Anything gE)                     = gE
+cc_aux.hs@205@  instance Morphical a => Morphical (Classification a) where
+cc_aux.hs@206@   concs                                         = rd . concat . map concs . preCl
+cc_aux.hs@207@   conceptdefs                                   = rd . concat . map conceptdefs . preCl
+cc_aux.hs@208@   mors                                          = rd . concat . map mors . preCl
+cc_aux.hs@209@   signatures                                    = rd . concat . map signatures . preCl
+cc_aux.hs@212@   concs (Sgn _ a b _ _ _ _ _ _)                 = rd [a,b]
+cc_aux.hs@213@   concs (Idn a _)                               = [a]
+cc_aux.hs@215@   genE (Sgn nm a b props prL prM prR cs pos)    = genE a
+cc_aux.hs@216@   genE (Idn a _)                                = genE a
+cc_aux.hs@219@   concs (Mph nm pos atts (a,b) m)               = rd [a,b]
+cc_aux.hs@220@   concs (Id pos atts c)                         = [c]
+cc_aux.hs@221@   mors m@(Mph _ _ _ _ _)                        = [m]
+cc_aux.hs@223@   genE (Mph nm pos atts (a,b) m)                = genE m
+cc_aux.hs@224@   genE (Id pos atts c)                          = genE c
+cc_aux.hs@227@   concs (G g s)                                 = rd [g,s]
+cc_aux.hs@229@   genE (G g s)                                  = genE s
+cc_aux.hs@232@   concs (Tm m _)                                = rd (concs m)
+cc_aux.hs@233@   concs (Tf m _)                                = rd (concs m)
+cc_aux.hs@234@   concs (Tc f _)                                = rd (concs f)
+cc_aux.hs@235@   concs (F ts)                                  = rd (concs ts)
+cc_aux.hs@236@   concs (Fu fs)                                 = rd (concs fs)
+cc_aux.hs@237@   concs (Fi fs)                                 = rd (concs fs)
+cc_aux.hs@239@   mors (Tm m _)                                 = mors m
+cc_aux.hs@240@   mors (Tf m _)                                 = mors m
+cc_aux.hs@241@   mors (Tc f _)                                 = mors f
+cc_aux.hs@242@   mors (F ts)                                   = mors ts
+cc_aux.hs@243@   mors (Fu fs)                                  = mors fs
+cc_aux.hs@244@   mors (Fi fs)                                  = mors fs
+cc_aux.hs@246@   genE (F ts)                                   = genE ts
+cc_aux.hs@247@   genE (Fu fs)                                  = genE fs
+cc_aux.hs@248@   genE (Fi fs)                                  = genE fs
+cc_aux.hs@249@   genE (Tm m _)                                 = genE m
+cc_aux.hs@250@   genE (Tf m _)                                 = genE m
+cc_aux.hs@251@   genE (Tc f _)                                 = genE f
+cc_aux.hs@254@   concs (Ru c antc pos cons expla (a,b) nr)     = rd (concs antc++concs cons)
+cc_aux.hs@255@   concs (Gc pos m expr (a,b) nr)                = rd (concs m++concs expr)
+cc_aux.hs@256@   mors (Ru c antc pos cons expla sgn nr)        = rd (mors antc++mors cons)
+cc_aux.hs@257@   mors (Gc pos m expr sgn nr)                   = rd (mors m++mors expr)
+cc_aux.hs@258@   genE (Ru c antc _ cons _ _ _)                 = genE [antc,cons]
+cc_aux.hs@259@   genE (Gc pos m expr sgn n)                    = genE m
+cc_aux.hs@262@   concs (Pat nm rs gen pms cs)                  = rd (concs rs++concs gen++concs pms)
+cc_aux.hs@263@   conceptdefs (Pat nm rs gen pms cs)            = cs
+cc_aux.hs@264@   mors (Pat nm rs gen pms cs)                   = mors rs
+cc_aux.hs@265@   signatures (Pat nm rs parChds pms cs)         = pms
+cc_aux.hs@266@   genE  (Pat nm rs parChds pms cs)              = genE (signatures rs++pms)
+cc_aux.hs@269@   concs       (Ctx nm on isa world dc ms cs) = rd (concs ms++concs dc)
+cc_aux.hs@270@   conceptdefs (Ctx nm on isa world dc ms cs) = cs
+cc_aux.hs@271@   mors        (Ctx nm on isa world dc ms cs) = mors dc
+cc_aux.hs@272@   signatures  (Ctx nm on isa world dc ms cs) = rd (signatures dc++ms)
+cc_aux.hs@275@   showsPrec p Uni = showString "UNI"
+cc_aux.hs@276@   showsPrec p Inj = showString "INJ"
+cc_aux.hs@277@   showsPrec p Sur = showString "SUR"
+cc_aux.hs@278@   showsPrec p Tot = showString "TOT"
+cc_aux.hs@279@   showsPrec p Sym = showString "SYM"
+cc_aux.hs@280@   showsPrec p Asy = showString "ASY"
+cc_aux.hs@281@   showsPrec p Trn = showString "TRN"
+cc_aux.hs@282@   showsPrec p Rfx = showString "RFX"
+cc_aux.hs@286@    = showString ("CONTEXT "++nm++
+cc_aux.hs@297@   showHS Uni  = "Uni"
+cc_aux.hs@298@   showHS Inj  = "Inj"
+cc_aux.hs@299@   showHS Sur  = "Sur"
+cc_aux.hs@300@   showHS Tot  = "Tot"
+cc_aux.hs@301@   showHS Sym  = "Sym"
+cc_aux.hs@302@   showHS Asy  = "Asy"
+cc_aux.hs@303@   showHS Trn  = "Trn"
+cc_aux.hs@304@   showHS Rfx  = "Rfx"
+cc_aux.hs@305@   showADL Uni = "UNI"
+cc_aux.hs@306@   showADL Inj = "INJ"
+cc_aux.hs@307@   showADL Sur = "SUR"
+cc_aux.hs@308@   showADL Tot = "TOT"
+cc_aux.hs@309@   showADL Sym = "SYM"
+cc_aux.hs@310@   showADL Asy = "ASY"
+cc_aux.hs@311@   showADL Trn = "TRN"
+cc_aux.hs@312@   showADL Rfx = "RFX"
+cc_aux.hs@314@  instance ShowHS a => ShowHS [a] where
+cc_aux.hs@315@   showHS  = chain "\n".map showHS
+cc_aux.hs@316@   showADL = chain "\n".map showADL
+cc_aux.hs@324@      "isa = "++showHS isa++
+cc_aux.hs@328@      where nlHs = "\n>  "; ind = nlHs++"       "; nlHs' = nlHs++"    "
+cc_aux.hs@330@    = "CONTEXT\n" ++
+cc_aux.hs@336@    = nlHs++"pat_"++nm++nlHs'++"= Pat "++show nm++
+cc_aux.hs@341@      where nlHs = "\n>      "; ind = nlHs++"       "; nlHs' = nlHs++"    "
+cc_aux.hs@343@    = "PATTERN\n" ++
+cc_aux.hs@350@    = chain " " ["Ru",[c],"("++showHS antc++")","posNone","("++showHS cons++")",show(explain r),showSgn sgn,show nr]
+cc_aux.hs@352@    = chain " " ["Gc","posNone","("++showHS m++")","("++showHS expr++")",showSgn sgn,show nr]
+cc_aux.hs@354@    = showADL antc++" -: "++showADL cons
+cc_aux.hs@356@    = showADL defd++" = "++showADL expr
+cc_aux.hs@358@    = "GLUE "++showADL m++" = "++showADL expr
+cc_aux.hs@361@   showHS  (Tm m c) = "Tm ("++showHS m++") "++show c
+cc_aux.hs@362@   showHS  (Tf f c) = "Tf ("++showHS f++") "++show c
+cc_aux.hs@363@   showHS  (Tc f c) = "Tc ("++showHS f++") "++show c
+cc_aux.hs@364@   showHS (F ts)    = chain " " ["F",showL (map showHS ts)]
+cc_aux.hs@365@   showHS (Fu fs)   = chain " " ["Fu",showL (map showHS fs)]
+cc_aux.hs@366@   showHS (Fi fs)   = chain " " ["Fi",showL (map showHS fs)]
+cc_aux.hs@371@   showADL (F ts)   = chain ";" (map showADL ts)
+cc_aux.hs@372@   showADL (Fu fs)  = chain "\\/" (map showADL fs)
+cc_aux.hs@373@   showADL (Fi fs)  = chain "/\\" (map showADL fs)
+cc_aux.hs@375@  showS m = name m++"["++show (source m)++","++show (target m)++"]"
+cc_aux.hs@376@  showSgn (a,b) = "("++showHS a++","++showHS b++")"
+cc_aux.hs@377@  showSign cs = "["++chain "*" (map name cs)++"]"
+cc_aux.hs@380@  instance ShowHS a => ShowHS (Inheritance a) where
+cc_aux.hs@382@   showADL (Isa ts cs) = ""
+cc_aux.hs@385@   showHS (Anything _) = "Anything"
+cc_aux.hs@386@   showHS  c = "C "++show (name c)++" "++show (conts c)
+cc_aux.hs@387@   showADL c = show (name c)
+cc_aux.hs@393@    = ""
+cc_aux.hs@395@    = nm++" :: "++name a++" * "++name b++(if null props then "" else showL(map showADL props))++
+cc_aux.hs@399@    = ""
+cc_aux.hs@403@    = chain " " ["Mph",show nm,(\(FilePos (_,Pos l c,_))->show (l,c)) pos,showL(map showHS atts),showSgn sgn,"mor_"++nm++name a++name b]
+cc_aux.hs@405@    = chain " " ["Id",(\(FilePos (_,Pos l c,_))->show (l,c)) pos,showL(map showHS atts),name c]
+cc_aux.hs@407@    = nm++if null atts then "" else showSign atts
+cc_aux.hs@409@    = "I"++if null atts then "" else showSign atts
+cc_aux.hs@412@   showHS (G g s)  = "G ("++show s++") ("++show g++")"
+cc_aux.hs@413@   showADL (G g s) = "GEN "++showADL s++" ISA "++show g
+cc_aux.hs@417@    = showString ("PATTERN "++nm++"\n"++
+cc_aux.hs@425@    = showString (show antc++(if c=='I' then " -: " else " = ")++show cons++"\n  EXPLANATION "++explain r++"\n("++show (pos r)++")")
+cc_aux.hs@427@    = showString ("GLUE "++show m++" = "++show expr++"\n("++show (pos r)++")")
+cc_aux.hs@435@   showsPrec p (F ts)   = showString (chain ";" (map show ts))
+cc_aux.hs@436@   showsPrec p (Fu fs)  = showString ("("++chain "\\/" (map show fs)++")")
+cc_aux.hs@437@   showsPrec p (Fi fs)  = showString ("("++chain "/\\" (map show fs)++")")
+cc_aux.hs@441@  shSigns [(a,b)] = "["++show a++"*"++show b++"]"
+cc_aux.hs@445@   showsPrec p c = showString (name c)
+cc_aux.hs@451@   showsPrec p (Mph nm pos atts sgn m) = showString (nm  {- ++"["++chain "*" (map name (rd atts))++"]" -} )
+cc_aux.hs@452@   showsPrec p (Id pos atts c)         = showString ("I" ++ if null atts then {- ++"["++name c++"]" -} "" else show atts)
+cc_aux.hs@456@    = showString (chain " " [nm,"::",name a,"*",name b,show props,"PRAGMA",show prL,show prM,show prR])
+cc_aux.hs@458@    = showString ""
+cc_aux.hs@463@   showsPrec p (G g s) = showString ("GEN "++show s++" ISA "++show g)
+cc_aux.hs@468@  fEmpty     _   = False
+cc_aux.hs@471@--   I nm == I nm' = True
+cc_aux.hs@472@   m == m' = mor2name m==mor2name m' && source m==source m' && target m==target m'
+cc_aux.hs@474@   m == m' = mor2name m==mor2name m' && source m==source m' && target m==target m'
+cc_aux.hs@480@  Uni:    forall x,y,y': x m y & x m y' = y==y'           (~m;m `subsetEq` I (target m))
+cc_aux.hs@482@  Inj:    forall x,x',y: x m y & x' m y = x==x'           (m;~m `subsetEq` I (source m))
+cc_aux.hs@484@  Trn:    forall x,y,z: x m y & y m z = x m z             (m;m `subsetEq` m)
+cc_aux.hs@485@  Asy:    forall x,y: x m y & y m x = x==y                (m & ~m `subsetEq` I)
+cc_aux.hs@486@  Sym:    forall x,y: x m y <= y m x                      (m = ~m)
+cc_aux.hs@493@   contents (Mph _ _ _ _ m)         = contents m
+cc_aux.hs@497@   contents (Sgn _ _ _ _ _ _ _ cs _) = cs
+cc_aux.hs@501@   contents (Tm m c)      = contents m
+cc_aux.hs@502@   contents (Tf m c)      = map reverse (contents m)
+cc_aux.hs@503@   contents (Tc f c)      = contents f
+cc_aux.hs@508@                            where C _ _ cs = source f `lub` target f
+cc_aux.hs@514@  join a b = rd (merge ((sort' (last.head).eqCl last) a)
+cc_aux.hs@523@   = [ C c gE (sord (concat (map snd raw)))
+cc_aux.hs@526@                              , if s' `gEq` s && t' `gEq` t then True else error("Fatal: err in makeConceptSpace with "++showHS m++"\nand sgn="++showHS sgn++"\n"++gEtable [s,s',t,t']) ]
+cc_aux.hs@537@   update ss c = c
+cc_aux.hs@541@   specialize (a,b) c = if length (eqClass order [a,b,c])>1 then error ("Fatal: specialize 1 ("++show a++","++show b++") "++showHS c) else
+cc_aux.hs@544@  instance (Show a,Pop a) => Pop (a,a) where
+cc_aux.hs@545@   populate cs (s,t) = (populate cs s,populate cs t)
+cc_aux.hs@547@    specialize (a,b) (s,t) = if not (a `order` s && b `order` t) then error ("Fatal: specialize 2 ("++show a++","++show b++") ("++show s++","++show t++")") else
+cc_aux.hs@551@   populate cs (G g s)  = G (populate cs g)  (populate cs s)
+cc_aux.hs@552@   update ss (G g s)    = G (update ss g)    (update ss s)
+cc_aux.hs@553@   specialize t (G g s) = G (specialize t g) (specialize t s)
+cc_aux.hs@556@   populate cs (Ctx nm on isa world dc ms cs')  = Ctx nm on isa world (map (populate cs) dc) (map (populate cs) ms) cs'
+cc_aux.hs@557@   update ss (Ctx nm on isa world dc ms cs')    = Ctx nm on isa world (map (update ss) dc) (map (update ss) ms) cs'
+cc_aux.hs@558@   specialize t (Ctx nm on isa world dc ms cs') = Ctx nm on isa world (map (specialize t) dc) (map (specialize t) ms) cs'
+cc_aux.hs@561@   populate cs (Pat nm rs gen pms cs')  = Pat nm (map (populate cs) rs) (map (populate cs) gen) (map (populate cs) pms) cs'
+cc_aux.hs@562@   update ss (Pat nm rs gen pms cs')    = Pat nm (map (update ss) rs) (map (update ss) gen) (map (update ss) pms) cs'
+cc_aux.hs@563@   specialize t (Pat nm rs gen pms cs') = Pat nm (map (specialize t) rs) (map (specialize t) gen) (map (specialize t) pms) cs'
+cc_aux.hs@566@   populate cs (Ru c antc pos cons expla sgn nr)  = Ru c (populate cs antc) pos (populate cs cons) expla (populate cs sgn) nr
+cc_aux.hs@567@   populate cs (Gc pos m expr sgn nr)             = Gc pos (populate cs m) (populate cs expr) (populate cs sgn) nr
+cc_aux.hs@568@   update ss (Ru c antc pos cons expla sgn nr)    = Ru c (update ss antc) pos (update ss cons) expla (update ss sgn) nr
+cc_aux.hs@569@   update ss (Gc pos m expr sgn nr)               = Gc pos (update ss m) (update ss expr) (update ss sgn) nr
+cc_aux.hs@570@   specialize t (Ru c antc pos cons expla sgn nr) = Ru c (specialize t antc) pos (specialize t cons) expla (specialize t sgn) nr
+cc_aux.hs@571@   specialize t (Gc pos m expr sgn nr)            = Gc pos (specialize t m) (specialize t expr) (specialize t sgn) nr
+cc_aux.hs@574@   populate cs (Tm m c)        = Tm (populate cs m) c
+cc_aux.hs@575@   populate cs (Tf m c)        = Tf (populate cs m) c
+cc_aux.hs@576@   populate cs (Tc f c)        = Tc (populate cs f) c
+cc_aux.hs@577@   populate cs (F ts)          = F  (map (populate cs) ts)
+cc_aux.hs@578@   populate cs (Fu fs)         = Fu (map (populate cs) fs)
+cc_aux.hs@579@   populate cs (Fi fs)         = Fi (map (populate cs) fs)
+cc_aux.hs@581@   update ss (Tm m c)          = Tm (update ss m) c
+cc_aux.hs@582@   update ss (Tf m c)          = Tf (update ss m) c
+cc_aux.hs@583@   update ss (Tc f c)          = Tc (update ss f) c
+cc_aux.hs@584@   update ss (F ts)            = F  (map (update ss) ts)
+cc_aux.hs@585@   update ss (Fu fs)           = Fu (map (update ss) fs)
+cc_aux.hs@586@   update ss (Fi fs)           = Fi (map (update ss) fs)
+cc_aux.hs@588@   specialize t (Tm m c)       = Tm (specialize t m) c
+cc_aux.hs@589@   specialize t@(a,b) (Tf m c) = Tf (specialize (b,a) m) c
+cc_aux.hs@590@   specialize t (Tc f c)       = Tc (specialize t f) c
+cc_aux.hs@591@   specialize t@(a,b) (F [t']) = F [specialize t t']
+cc_aux.hs@592@   specialize t@(a,b) (F ts)   = F ([specialize (a,target h) h]++init (tail ts)++[specialize (source l,b) l])
+cc_aux.hs@593@                                 where h=head ts; l=last ts
+cc_aux.hs@594@   specialize t@(a,b) (Fu fs)  = Fu (map (specialize t) fs) 
+cc_aux.hs@595@   specialize t@(a,b) (Fi fs)  = Fi (map (specialize t) fs) 
+cc_aux.hs@597@  instance Pop a = Pop [a] where
+cc_aux.hs@603@   populate cs (Mph nm p atts sgn s)  = Mph nm p (map (populate cs) atts) (populate cs sgn) (populate cs s)
+cc_aux.hs@604@   populate cs (Id p atts c)          = Id p (map (populate cs) atts) (populate cs c)
+cc_aux.hs@605@   update ss (Mph nm p atts sgn s)    = Mph nm p atts (update ss sgn) (update ss s) 
+cc_aux.hs@606@   update ss (Id pos atts c)          = Id pos (map (update ss) atts) (update ss c)
+cc_aux.hs@609@                                        where spec= specialize t c
+cc_aux.hs@612@   populate cs (Sgn nm a b props prL prM prR cs' pos) = Sgn nm (populate cs a) (populate cs b) props prL prM prR cs' pos
+cc_aux.hs@613@   populate cs (Idn a pos)                            = Idn (populate cs a) pos
+cc_aux.hs@615@   update ss s@(Idn a pos)                            = s
+cc_aux.hs@617@   specialize (x,y) s@(Idn a pos)                         = if x `order` y then Idn (x `lub` y) pos else error("Fatal: specialize 7 "++show (x,y)++showHS s)
+cc_aux.hs@622@   sign x = (source x,target x)
+cc_aux.hs@627@   isIdent m  = False
+cc_aux.hs@634@  instance Morphics a => Morphics [a] where
+cc_aux.hs@637@   anything (Anything _) = True
+cc_aux.hs@638@   anything _ = False
+cc_aux.hs@639@  instance (Morphics a,Morphics b) => Morphics (a,b) where
+cc_aux.hs@640@   anything (x,y) = anything x && anything y
+cc_aux.hs@643@   source (Mph nm pos atts (a,b) m) = a
+cc_aux.hs@644@   source (Id pos atts c)           = c
+cc_aux.hs@645@   target (Mph nm pos atts (a,b) m) = b
+cc_aux.hs@646@   target (Id pos atts c)           = c
+cc_aux.hs@647@   sign   (Mph nm pos atts (a,b) m) = (a,b)
+cc_aux.hs@648@   sign   (Id pos atts c)           = (c,c)
+cc_aux.hs@649@   multiplicities (Mph nm pos atts sgn m)    = multiplicities m
+cc_aux.hs@650@   multiplicities (Id pos atts c)            = [Uni,Tot,Sur,Inj,Sym,Trn,Rfx]
+cc_aux.hs@651@   flp (Mph nm pos atts (a,b) m)    = Mph nm pos (reverse atts) (b,a) (flp m)
+cc_aux.hs@652@   isIdent (Mph _ _ _ _ _ )         = False
+cc_aux.hs@653@   isIdent (Id _ _ _ )              = True
+cc_aux.hs@656@   source (Sgn _ a b _ _ _ _ _ _)             = a
+cc_aux.hs@657@   source (Idn c _)                           = c
+cc_aux.hs@658@   target (Sgn _ a b _ _ _ _ _ _)             = b
+cc_aux.hs@659@   target (Idn c _)                           = c
+cc_aux.hs@660@   sign   (Sgn _ a b _ _ _ _ _ _)             = (a,b)
+cc_aux.hs@661@   sign   (Idn c _)                           = (c,c)
+cc_aux.hs@662@   multiplicities (Sgn _ _ _ props _ _ _ _ _) = props
+cc_aux.hs@663@   multiplicities (Idn _ _)                   = [Uni,Tot,Sur,Inj,Rfx,Trn,Sym]
+cc_aux.hs@664@   flp(Sgn nm a b props prL prM prR cs pos)   = Sgn nm b a (flipProps props) "" "" "" (map reverse cs) pos
+cc_aux.hs@665@   flp    i                                   = i
+cc_aux.hs@666@   isIdent (Idn _ _)                          = True
+cc_aux.hs@667@   isIdent _                                  = False
+cc_aux.hs@670@   source (Tm m _)         = source m
+cc_aux.hs@671@   source (Tf m _)         = target m
+cc_aux.hs@672@   source (Tc f _)         = source f
+cc_aux.hs@673@   source (F  ts)          = source (head ts)
+cc_aux.hs@674@   source (Fu fs)          = source (head fs)
+cc_aux.hs@675@   source (Fi fs)          = source (head fs)
+cc_aux.hs@677@   target (Tm m _)         = target m
+cc_aux.hs@678@   target (Tf m _)         = source m
+cc_aux.hs@679@   target (Tc f _)         = target f
+cc_aux.hs@680@   target (F ts)           = target (last ts)
+cc_aux.hs@681@   target (Fu fs)          = target (last fs)
+cc_aux.hs@682@   target (Fi fs)          = target (last fs)
+cc_aux.hs@684@   sign (Tm m _)           = sign m
+cc_aux.hs@685@   sign (Tf m _)           = (b,a) where (a,b) = sign m
+cc_aux.hs@686@   sign (Tc f _)           = sign f
+cc_aux.hs@687@   sign (F ts)             = if null ts then error ("Fatal: no terms in sign (F "++showHS ts++")") else
+cc_aux.hs@689@                             where (s,t) `jnSign` (s',t') = (s,t')
+cc_aux.hs@690@   sign (Fu fs)            = if length (eqClass order (map sign fs))>1 then error ("Fatal: sign (Fu fs) not defined\nwith map sign fs="++show (map sign fs)) else
+cc_aux.hs@692@   sign (Fi fs)            = if length (eqClass order (map sign fs))>1 then error ("Fatal: sign (Fi fs) not defined\nwith map sign fs="++show (map sign fs)) else
+cc_aux.hs@698@   multiplicities (F ts)   = foldr isc [Uni,Tot,Sur,Inj] (map multiplicities ts)
+cc_aux.hs@702@   flp (Tm m c)            = Tf m c
+cc_aux.hs@703@   flp (Tf m c)            = Tm m c
+cc_aux.hs@704@   flp (Tc f c)            = Tc (flp f) c
+cc_aux.hs@705@   flp (F ts)              = F (map flp (reverse ts))
+cc_aux.hs@706@   flp (Fu fs)             = Fu (map flp fs)
+cc_aux.hs@707@   flp (Fi fs)             = Fi (map flp fs)
+cc_aux.hs@709@   isIdent (Tm m _)        = isIdent m
+cc_aux.hs@710@   isIdent (Tf m _)        = isIdent m
+cc_aux.hs@711@   isIdent (Tc f _)        = isIdent f
+cc_aux.hs@716@  instance Morphic a = Morphic [a] where
+cc_aux.hs@718@   source as   = source (head as)
+cc_aux.hs@720@   target as   = target (last as)
+cc_aux.hs@721@   flp         = map flp.reverse
+cc_aux.hs@729@   subsR r x = x
+cc_aux.hs@732@   subst (m,f) x = error "Unable to substitute"
+cc_aux.hs@734@  instance (Morphic a,Substitutive a) => Substitutive [a] where
+cc_aux.hs@746@   subsC s (Tm m c) = Tm m' c where m' = subsC s m
+cc_aux.hs@747@   subsC s (Tf m c) = Tf m' c where m' = subsC s m  -- CORRECT???
+cc_aux.hs@748@   subsC s (Tc f c) = Tc f' c where f' = subsC s f
+cc_aux.hs@749@   subsC s (F ts)   = F  (map (subsC s) ts)
+cc_aux.hs@750@   subsC s (Fu fs)  = Fu (map (subsC s) fs)
+cc_aux.hs@751@   subsC s (Fi fs)  = Fi (map (subsC s) fs)
+cc_aux.hs@753@    = head ([ F ts'
+cc_aux.hs@758@--      subs :: Eq a => a->[a]->[a]->([a],Int)
+cc_aux.hs@764@         where state' = state++[t]
+cc_aux.hs@768@   subsR s (Fu fs) = Fu (map (subsR s) fs)
+cc_aux.hs@769@   subsR s (Fi fs) = Fi (map (subsR s) fs)
+cc_aux.hs@770@   subst (m,f) t@(Tm m' c) = if     m==m' then Tc f  c else
+cc_aux.hs@771@                             if flp m==m' then Tc f' c else t
+cc_aux.hs@772@                             where f'=flp f
+cc_aux.hs@773@   subst (m,f) t@(Tf m' c) = if     m==m' then Tc f' c else
+cc_aux.hs@774@                             if flp m==m' then Tc f  c else t
+cc_aux.hs@775@                             where f'=flp f
+cc_aux.hs@776@   subst (m,f) (Tc f' c)   = Tc (subst (m,f) f') c
+cc_aux.hs@777@   subst (m,f) (F ts)      = F  (subst (m,f) ts)
+cc_aux.hs@778@   subst (m,f) (Fu fs)     = Fu (subst (m,f) fs)
+cc_aux.hs@779@   subst (m,f) (Fi fs)     = Fi (subst (m,f) fs)
+cc_aux.hs@783@   name (Tm m c) = name m
+cc_aux.hs@784@   name (Tf m c) = name m++"~"
+cc_aux.hs@785@   name (Tc f c) = ""       -- this is wrong! Todo: find out about Tc
+cc_aux.hs@789@    = if sign antc' `order` sign cons'
+cc_aux.hs@791@      else error("Fatal: cannot execute:   subsC s r\nwith s="++show s++"\nand  r="++showADL r++"\n"++showHS r++"\nbecause "++show (sign antc')++" `order` "++show (sign cons')++" is False.")
+cc_aux.hs@792@      where antc' = subsC s antc
+cc_aux.hs@793@            cons' = subsC s cons
+cc_aux.hs@795@    = if sign m' `order` sign expr'
+cc_aux.hs@797@      else error("Fatal: cannot execute:   subsC s g\nwith s="++show s++"\nand  g="++showADL g++"\n"++showHS g++"\nbecause "++show (sign m')++" `order` "++show (sign expr')++" is False.")
+cc_aux.hs@798@      where m'    = subsC s m
+cc_aux.hs@799@            expr' = subsC s expr
+cc_aux.hs@801@    = if sign antc' `order` sign cons'
+cc_aux.hs@803@      else error("Fatal: cannot execute:   subsR s r\nwith s="++show s++"\nand  r="++showADL r++"\n"++showHS r++"\nbecause "++show (sign antc')++" `order` "++show (sign cons')++" is False.")
+cc_aux.hs@804@      where antc' = subsR s antc
+cc_aux.hs@805@            cons' = subsR s cons
+cc_aux.hs@806@            sgn'  = sign antc' `lub` sign cons'
+cc_aux.hs@808@    = if sign m' `order` sign expr'
+cc_aux.hs@810@      else error("Fatal: cannot execute:   subsR s g\nwith s="++show s++"\nand  g="++showADL g++"\n"++showHS g++"\nbecause "++show (sign m')++" `order` "++show (sign expr')++" is False.")
+cc_aux.hs@811@      where m'    = subsR s m
+cc_aux.hs@812@            expr' = subsR s expr
+cc_aux.hs@814@    = if sign antc' `order` sign cons'
+cc_aux.hs@816@      else error("Fatal: cannot execute:   subst (m,f) r\nwith m="++show m++"\n     f="++show f++"\nand  r="++showADL r++"\n"++showHS r++"\nbecause "++show (sign antc')++" `order` "++show (sign cons')++" is False.")
+cc_aux.hs@817@      where antc' = subst (m,f) antc
+cc_aux.hs@818@            cons' = subst (m,f) cons
+cc_aux.hs@820@    = Gc pos m' expr' (sign expr') nr
+cc_aux.hs@821@      where expr' = subst (m,f) expr
+cc_aux.hs@837@  s `iscCpt` Anything _ = s
+cc_aux.hs@838@  Anything _ `iscCpt` t = t
+cc_aux.hs@843@                C a  gE  cs  = s
+cc_aux.hs@844@                C a' gE' cs' = t
+cc_aux.hs@845@  s `uniCpt` Anything gE = Anything gE
+cc_aux.hs@846@  Anything gE `uniCpt` t = Anything gE
+cc_aux.hs@851@                C a  gE  cs  = s
+cc_aux.hs@852@                C a' gE' cs' = t
+cc_aux.hs@854@  e `elemCpt` s  = e `elem` conts s
+cc_aux.hs@860@  e `elemSgn` s  = e `elem` contents s
+cc_aux.hs@868@                 h ps = ps>-[Sym,Asy,Trn,Rfx]
+cc_aux.hs@869@                 Sgn nm  a  b  props  prL  prM  prR  cs  pos  = s
+cc_aux.hs@870@                 Sgn nm' a' b' props' prL' prM' prR' cs' pos' = t
+cc_aux.hs@872@    = Sgn nm (if a `order` a' then a `lub` a' else
+cc_aux.hs@878@    = Sgn nm (if a `order` c then a `lub` c else
+cc_aux.hs@884@    = Sgn nm (if a `order` c then a `lub` c else
+cc_aux.hs@890@    = Sgn nm (if a `order` a' then a `lub` a' else
+cc_aux.hs@896@    = Sgn nm (if a `order` a' then a `lub` a' else
+cc_aux.hs@908@    = Idn a pos
+cc_aux.hs@919@   limit sgn (Mph nm pos atts (a,b) m) = Mph nm pos atts sgn (limit sgn m)
+cc_aux.hs@920@   limit (a,b) (Id pos atts c)         = if a==b then Id pos atts a
+cc_aux.hs@922@   calc (Mph nm pos atts sgn s) ss  = if null signs then error("Scope error :"++showS s++" "++show (map showS ss)) else
+cc_aux.hs@926@   strands sgn (Mph nm pos atts (a,b) m) = strands sgn m
+cc_aux.hs@929@   nostrds sgn (Mph nm pos atts (a,b) m) = nostrds sgn m
+cc_aux.hs@933@   limit sgn'  (Tm m c) = Tm (limit sgn' m) c
+cc_aux.hs@934@   limit (a,b) (Tf m c) = Tf (limit (b,a) m) c
+cc_aux.hs@935@   limit sgn'  (Tc f c) = Tc (limit sgn' f) c 
+cc_aux.hs@936@   limit sgn (F ts)     = F (lim sgn ts)
+cc_aux.hs@937@    where lim sgn  [x] = [limit sgn x]
+cc_aux.hs@941@   limit sgn (Fu fs)    = Fu (map (limit sgn) fs)
+cc_aux.hs@942@   limit sgn (Fi fs)    = Fi (map (limit sgn) fs)
+cc_aux.hs@944@   calc (Tm m _) ss     = calc m ss
+cc_aux.hs@945@   calc (Tf f _) ss     = map reverse (calc f ss)
+cc_aux.hs@946@   calc (Tc f _) ss     = calc f ss
+cc_aux.hs@947@   calc (F  ts) ss      = if null ts then error ("Fatal: no terms in calc (F "++showHS ts++")") else
+cc_aux.hs@950@   calc (Fi fs) ss      = if null fs then error ("Fatal: no factors in calc (Fi "++showHS fs++")") else
+cc_aux.hs@953@   strands sgn (Tc f _) = strands sgn f
+cc_aux.hs@954@   strands sgn (F ts)   = str sgn ts
+cc_aux.hs@955@   strands sgn (Fu fs)  = concat (map (strands sgn) fs)
+cc_aux.hs@961@   nostrds sgn (Tm m _) = nostrds sgn m
+cc_aux.hs@962@   nostrds sgn (Tf m _) = map reverse (nostrds sgn m)
+cc_aux.hs@963@   nostrds sgn (Tc f _) = nostrds sgn f
+cc_aux.hs@967@   nostrds sgn (Fi fs)  = concat (map (nostrds sgn) fs)
+cc_aux.hs@968@   nostrds sgn (Fu fs)  = concat (map (nostrds sgn) fs)
+cc_aux.hs@973@             , rest<-str (c,b) ts, last s==head rest]
+cc_aux.hs@974@     where c = if null ts then target f else target f `lub` source (head ts)
+cc_aux.hs@977@                           , rest<-str (if null ts then target t else target t `lub` source (head ts),b) ts, show y==head rest]
+cc_aux.hs@989@     , show y==head rest
+cc_aux.hs@992@             C nm gE os = target t
+cc_aux.hs@1005@     , show x==last rest
+cc_aux.hs@1006@     ] where t=last tms; ts=init tms
+cc_aux.hs@1009@             C nm gE os = source t
+cc_aux.hs@1012@  fun = elem Uni
+cc_aux.hs@1013@  tot = elem Tot
+cc_aux.hs@1014@  inj = elem Inj
+cc_aux.hs@1015@  sur = elem Sur
+cc_aux.hs@1019@  flipProp Uni = Inj
+cc_aux.hs@1020@  flipProp Tot = Sur
+cc_aux.hs@1021@  flipProp Sur = Tot
+cc_aux.hs@1022@  flipProp Inj = Uni
+cc_aux.hs@1023@  flipProp Trn = Trn
+cc_aux.hs@1024@  flipProp Sym = Sym
+cc_aux.hs@1025@  flipProp Asy = Asy
+cc_aux.hs@1026@  flipProp Rfx = Rfx
+cc_aux.hs@1030@   name (C nm _ _) = nm
+cc_aux.hs@1031@   name (Anything _) = "Anything"
+cc_aux.hs@1033@   name (Mph nm pos atts sgn m) = nm
+cc_aux.hs@1034@   name (Id pos atts c) = "I"
+cc_aux.hs@1036@   name (Sgn nm _ _ _ _ _ _ _ _) = nm
+cc_aux.hs@1037@   name (Idn _ _)                = "I"
+cc_aux.hs@1039@  applyM (Sgn _ _ _ _ prL prM prR _ _) d c = prL++d++prM++c++prR++"."
+cc_aux.hs@1040@  applyM (Idn _ _)                     d c = d++" = "++c
+cc_aux.hs@1047@    idC = source c `upb` target c `upb` idA
+cc_aux.hs@1048@    idA = foldr upb (target (last ants)) (map source ants)
+cc_aux.hs@1049@    (as,cs) = move ants cons
+cc_aux.hs@1050@    (sa,sc) = (source (head as) `upb` source (head cs), target (last as) `upb` target (last cs))
+cc_aux.hs@1056@     where h=head as; l=last as
+cc_aux.hs@1057@  normRule upb r = r
+cc_aux.hs@1065@  irredT gE ms = map (foldr1 lub) (eqClass order ms)
+cc_aux.hs@1066@                 where (a,a') `lub` (b,b')   = if a `gE` b && a' `gE` b' then (b,b') else (a,a')
+cc_aux.hs@1069@  irredM gE ms = map (foldr1 lub) (eqClass order ms)
+cc_aux.hs@1070@                 where m `lub` m'   = if a `gE` b && a' `gE` b' then m else m'
+cc_aux.hs@1071@                                      where (a,a') = sign m; (b,b') = sign m'
+cc_aux.hs@1073@                                      where (a,a') = sign m; (b,b') = sign m'
+cc_aux.hs@1076@   name (Ctx nm _ _ _ _ _ _) = nm
+cc_aux.hs@1079@   name (Pat nm _ _ _ _) = nm
+cc_aux.hs@1088@    = Pat nm' (rd(rs++rs')) (rd(parChds++parChds')) (rd(pms++pms')) (rd(cs++cs'))
+cc_aux.hs@1090@  class Morphical a => Language a where
+cc_aux.hs@1093@    srules    = rules.rd.signatures
+cc_aux.hs@1100@  instance Language a => Language [a] where
+cc_aux.hs@1103@   patterns = rd' name.concat.map patterns
+cc_aux.hs@1104@   isa      = foldr uni empty.map isa
+cc_aux.hs@1106@  instance Language a => Language (Classification a) where
+cc_aux.hs@1107@   rules cl    = rules (preCl cl)
+cc_aux.hs@1108@   specs cl    = specs (preCl cl)
+cc_aux.hs@1109@   patterns cl = patterns (preCl cl)
+cc_aux.hs@1110@   isa         = foldr uni empty.map isa.preCl
+cc_aux.hs@1113@   rules   r@(Gc pos m expr sgn n) = [Ru 'E' (F [Tm m True]) pos expr (name m++" is implemented using "++enumerate (map name (mors expr))) sgn (nr r)]
+cc_aux.hs@1114@   rules   r                       = [r]
+cc_aux.hs@1115@   specs   r@(Gc _ _ _ _ _)        = [r]
+cc_aux.hs@1120@       where tuples = clear [(source antc,source cons),(target antc,target cons)]
+cc_aux.hs@1123@       where tuples = clear [(source expr,source m),(target expr,target m)]
+cc_aux.hs@1131@   patterns p                       = [p]
+cc_aux.hs@1133@                                      where Isa tuples singles = isa rs
+cc_aux.hs@1139@   patterns (Ctx nm on i world dc ms cs) = dc
+cc_aux.hs@1140@   isa      (Ctx nm on i world dc ms cs) = i
+cc_aux.hs@1145@          , if a==b then True else error ("!Err: Property "++show p++" requires equal source and target domains (you specified "++name a++" and "++name b++").") ]
+cc_aux.hs@1146@     where h Sym = Ru 'E' (F [Tm r True]) pos (F [Tf r True]) (nm++"["++name a++"*"++name a++"] is symmetric.") sgn 0
+cc_aux.hs@1147@           h Asy = Ru 'I' (Fi [F [Tm r True], F [Tf r True]]) pos id (nm++"["++name a++"*"++name a++"] is antisymmetric.") sgn 0
+cc_aux.hs@1148@           h Trn = Ru 'I' (F [Tm r True, Tm r True]) pos (F [Tm r True]) (nm++"["++name a++"*"++name a++"] is transitive.") sgn 0
+cc_aux.hs@1149@           h Rfx = Ru 'I' id pos (F [Tm r True]) (nm++"["++name a++"*"++name a++"] is reflexive.") sgn 0
+cc_aux.hs@1150@           sgn   = (a,a)
+cc_aux.hs@1151@           r     = Mph nm pos [a] sgn m
+cc_aux.hs@1156@   isa _      = empty
+cc_aux.hs@1158@  nogE a b = False
+cc_aux.hs@1161@  wrld (Ctx nm on i world dc ms cs) = world
+cc_aux.hs@1175@                  [ show (name c)++" -- "++show (name p)++" [color=red,style=dotted]"
+cc_aux.hs@1180@        introG = "\n   { style=\"filled\"; color=\".60 .27 1.0\"\n   ; node [shape=plaintext,fontsize=12,style=bold]\n   ; edge [dir=none]\n   ; {node [shape=ellipse,style=filled,fontsize=9,font=helvetica]"
+cc_aux.hs@1200@      -- verwijderd: <len="++show len++",> in de code <edge [len="++show len++",dir=none]>
+cc_aux.hs@1201@        introG = "\n   { style=\"filled\"; color=\"black\"\n   ; node [shape=plaintext,fontsize=12,style=bold]\n   ; edge [dir=none]\n   ; {node [shape=ellipse,style=filled,fontsize=9,font=helvetica]"
+cc_aux.hs@1202@        sls = map (map conceptForm) ls
+cc_aux.hs@1206@  newtype FilePos = FilePos (String, Pos, String)                        deriving Eq
+cc_aux.hs@1207@  posNone         = FilePos ("",noPos,"")
+cc_aux.hs@1211@      = "line " ++ show l
+cc_aux.hs@1216@      = "line " ++ show l
+cc_aux.hs@1220@  get_tok_pos     (Tok _ _ s l f) = FilePos (f,l,s)
+cc_aux.hs@1221@  get_tok_val_pos (Tok _ _ s l f) = (s,FilePos (f,l,s))
+cc_aux.hs@1223@  gsym_pos :: IsParser p Token => TokenType -> String -> String -> p FilePos
+cc_aux.hs@1224@  gsym_pos kind val val2 = get_tok_pos <$> pSym (Tok kind val val2 noPos "")
+cc_aux.hs@1226@  gsym_val_pos :: IsParser p Token => TokenType -> String -> String -> p (String,FilePos)
+cc_aux.hs@1227@  gsym_val_pos kind val val2 = get_tok_val_pos <$> pSym (Tok kind val val2 noPos "")
+cc_aux.hs@1229@  pOperAny           ::  IsParser p Token => p String
+cc_aux.hs@1230@  pOperAny           =   pOper    ""
+cc_aux.hs@1232@  pOper_pos name     =   gsym_pos TkOp        name      name
+cc_aux.hs@1233@  pKey_pos  keyword  =   gsym_pos TkKeyword   keyword   keyword
+cc_aux.hs@1234@  pSpec_pos s        =   gsym_pos TkSymbol    [s]       [s]
+cc_aux.hs@1238@                     ::  IsParser p Token => p FilePos
+cc_aux.hs@1239@  pOParen_pos        =   pSpec_pos '('
+cc_aux.hs@1241@  pString_pos        =   gsym_pos TkString    ""        "?STR?"
+cc_aux.hs@1242@  pChar_pos          =   gsym_pos TkChar      ""        "'chr'"
+cc_aux.hs@1243@  pInteger8_pos      =   gsym_pos TkInteger8  ""        "1"
+cc_aux.hs@1244@  pInteger10_pos     =   gsym_pos TkInteger10 ""        "1"
+cc_aux.hs@1245@  pInteger16_pos     =   gsym_pos TkInteger16 ""        "1"
+cc_aux.hs@1246@  pVarid_pos         =   gsym_pos TkVarid     ""        "?LC?"
+cc_aux.hs@1247@  pConid_pos         =   gsym_pos TkConid     ""        "?UC?"
+cc_aux.hs@1248@  pTextnm_pos        =   gsym_pos TkTextnm    ""        ""
+cc_aux.hs@1249@  pTextln_pos        =   gsym_pos TkTextln    ""        ""
+cc_aux.hs@1250@  pInteger_pos       =   pInteger10_pos
+cc_aux.hs@1254@                     ::  IsParser p Token => p (String,FilePos)
+cc_aux.hs@1255@  pInteger10_val_pos =   gsym_val_pos TkInteger10 ""        "1"
+cc_aux.hs@1256@  pString_val_pos    =   gsym_val_pos TkString    ""        "?STR?"
+cc_aux.hs@1257@  pChar_val_pos      =   gsym_val_pos TkChar      ""        "'chr'"
+cc_aux.hs@1258@  pVarid_val_pos     =   gsym_val_pos TkVarid     ""        "?LC?"
+cc_aux.hs@1259@  pConid_val_pos     =   gsym_val_pos TkConid     ""        "?UC?"
+cc_aux.hs@1260@  pInteger_val_pos   =   pInteger10_val_pos
+cc_aux.hs@1262@  pParens_pos        ::  IsParser p Token => p a -> p (FilePos,a)
+cc_aux.hs@1263@  pParens_pos p      =   (,) <$> pOParen_pos <*> p <* pCParen
+cc_aux.hs@1266@  mor2 m = [mor2name m,name (source m),name (target m)]
+cc_aux.hs@1268@  mor2filename m = "Atlas"++relName (mor2 m)++".html"
+cc_aux.hs@1269@  relName [r,d,c] = strip(r++conceptForm d++conceptForm c)

@@ -1,0 +1,55 @@
+
+generator.hs	8	   = "module Table"++fn++" where\n import Auxiliaries\n import Generator"++
+generator.hs	11	     where fn = relName [r,d,c]
+generator.hs	12	           [r,d',c'] = mor2 m
+generator.hs	13	           d=conceptForm d'; c=conceptForm c'
+generator.hs	17	   = writeFile (fn++".html")
+generator.hs	21	     where fn = "Atlas"++relName [r,d,c]
+generator.hs	22	           [r,d,c] = mor2 m
+generator.hs	24	   = writeFile (fn++".html")
+generator.hs	30	     where fn = "Atlas"++relName [r,d,c]
+generator.hs	31	           [r,d,c] = mor2 m
+generator.hs	32	           body i = pragmatics m++violLink m++genR i ls
+generator.hs	33	           genR i ls = htmlSortTable fn i [name (source m),name (target m),"Origin"]
+generator.hs	38	   = (writeFile (fn++".html") . htmlPage ("Concept listing for "++conceptForm t) t . htmlBody . body) (-1) >>
+generator.hs	43	     where fn        = "Atlas"++conceptForm t
+generator.hs	44	           body i    = genR i ls
+generator.hs	47	           genR i ls = htmlSortTable fn i [conceptForm t, "Origin"]
+generator.hs	55	   where dv=[toLower (head (name a))]
+generator.hs	56	         cn=toLower (head (name b))
+generator.hs	58	         [r,d,c] = mor2 m
+generator.hs	64	   = writeFile (fn++".html")
+generator.hs	68	     where fn = "Atlas"++show i++"Viol"
+generator.hs	70	   = writeFile (fn++".html")
+generator.hs	76	     where fn = "Atlas"++show i++"Viol"
+generator.hs	77	           body i  = htmlSortTable fn i ttl (if i<0 then ls else sort' (!!i) ls)
+generator.hs	82	   where [r,d,c] = mor2 m
+generator.hs	94	   where exceptions = [("mouse","mice"),("sheep","sheep")]
+generator.hs	145	   where domNm = head source!!0; codNm = head target!!0
+generator.hs	147	         attrs ((r:d:c:rest):ls) = [d,c]
+generator.hs	150	   = checkFun fn rn (map fflip r) target source
+generator.hs	151	     where fflip (r:d:c:a:b:rest) = r:c:d:b:a:rest
+generator.hs	159	   where domNm = head source!!0; codNm = head target!!0
+generator.hs	163	   = checkTot fn rn (map fflip r) target source
+generator.hs	164	     where fflip (r:d:c:a:b:rest) = r:c:d:b:a:rest-}
+generator.hs	169	  strp :: Eq a => [[a]]->[[a]]
+generator.hs	170	  strp   = rd . map (take 2)
+generator.hs	176	   = merge cs (sort' (!!lr) r)
+generator.hs	184	{-  jn ls rs = f (sort' last ls) (sort' head rs)
+generator.hs	192	                   f                (dropWhile ((hr==).last) ls)   (dropWhile ((hr==).head) rs)
+generator.hs	194	      hr = head r
+generator.hs	195	      ll = last l-}
+generator.hs	199	  jn' ls rs = f ls rs
+generator.hs	208	                   f      (dropWhile ((hr==).(!!1).reverse) ls)   (dropWhile ((hr==).head) rs)
+generator.hs	210	      hr = head r
+generator.hs	211	      ll = reverse l!!1
+generator.hs	213	  join' = jn'
+generator.hs	218	   = rd(merge (sort' (!!1) as) (sort' (!!0) bs))
+generator.hs	230	   = chain "\n"
+generator.hs	232	      [ "<TR bgcolor=mediumblue>" ]++
+generator.hs	240	   = chain "\n"
+generator.hs	241	     ([ "<TABLE WIDTH=\"75%\" BORDER=1 CELLSPACING=1 CELLPADDING=1 name=\"rsTable\" id=rsTable  cols="++show(length as)++">"]++
+generator.hs	242	      [ "<TR bgcolor=mediumblue>" ]++
+generator.hs	249	   = chain "\n"
+generator.hs	250	     ([ "<TABLE WIDTH=\"75%\" BORDER=1 CELLSPACING=1 CELLPADDING=1 name=\"rsTable\" id=rsTable  cols=1>"]++
+generator.hs	251	      [ "<TR bgcolor=mediumblue><TD><FONT color=white>"++htmlBold t++"</FONT></TD></TR>" ]++

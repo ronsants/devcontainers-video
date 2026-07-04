@@ -1,0 +1,1531 @@
+; Thu May 26 12:27:30 CEST 2005
+; 
+;+ (version "3.0")
+;+ (build "Build 141")
+
+
+(defclass %3ACLIPS_TOP_LEVEL_SLOT_CLASS "Fake class to save top-level slot information"
+	(is-a USER)
+	(role abstract)
+	(single-slot context
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot meaning
+		(type SYMBOL)
+		(allowed-values Contextualization Categorization Calculation Correction Condensation)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot generalization+processes
+		(type SYMBOL)
+		(allowed-values Comparison Consequences Connections Conservations)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot evidence
+		(type SYMBOL)
+		(allowed-values explicit implicit)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot purpose
+		(type SYMBOL)
+		(allowed-values know-what know-how)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot ownership
+		(type SYMBOL)
+		(allowed-values individual group organizational)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot format
+		(type SYMBOL)
+		(allowed-values informal semi-structured structured formal)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot intuition
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot experience
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot type
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot model+enterprise
+		(type SYMBOL)
+		(allowed-values s.e.f)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot business+view
+		(type SYMBOL)
+;+		(allowed-parents Business+Views)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot aspect
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Aspects)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot goals
+		(type STRING)
+		(create-accessor read-write))
+	(multislot enterprise+application
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Aspects)
+		(create-accessor read-write))
+	(single-slot power
+;+		(type ANY)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot foster
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot company+outputs
+		(type STRING)
+		(create-accessor read-write))
+	(single-slot created+by
+;+		(type ANY)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot value
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot aspects
+		(type SYMBOL)
+		(allowed-values syntactic semantic reasoning)
+		(create-accessor read-write))
+	(single-slot inference+aspects
+		(type SYMBOL)
+		(allowed-values forward_chaining backward_chaining)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot knowledge-base+aspects
+		(type SYMBOL)
+		(allowed-values completeness soundness)
+		(create-accessor read-write))
+	(multislot contains
+		(type INSTANCE)
+;+		(allowed-classes Slot Facet Demon)
+		(create-accessor read-write))
+	(single-slot instance
+		(type INSTANCE)
+;+		(allowed-classes Instance)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot facet+type
+		(type SYMBOL)
+		(allowed-values values default range other)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot demon+type
+		(type SYMBOL)
+		(allowed-values if-added if-needed)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot facet+value
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot demon+value
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(multislot script+contains
+		(type INSTANCE)
+;+		(allowed-classes Property Role Condition Scene Result)
+		(create-accessor read-write))
+	(multislot property+value
+		(type STRING)
+		(create-accessor read-write))
+	(multislot role+value
+		(type STRING)
+		(create-accessor read-write))
+	(single-slot type+condition
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot scene+value
+		(type STRING)
+		(create-accessor read-write))
+	(multislot result+value
+		(type STRING)
+		(create-accessor read-write))
+	(single-slot network+type
+		(type SYMBOL)
+		(allowed-values assertional)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot syntactic+type
+		(type SYMBOL)
+		(allowed-values conjunctive disjunctive K-term_DNF K-DNF K-CNF)
+;+		(cardinality 0 1)
+;+		(subslot-of rule+type)
+		(create-accessor read-write))
+	(single-slot rule+type
+		(type SYMBOL)
+		(allowed-values syntactic semantic)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot semantic+type
+		(type SYMBOL)
+		(allowed-values production association M-of-N ripple-down)
+;+		(cardinality 0 1)
+;+		(subslot-of rule+type)
+		(create-accessor read-write))
+	(single-slot structure
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot selectors
+		(type STRING)
+		(create-accessor read-write))
+	(single-slot vision
+		(type STRING)
+;+		(value "valuable knowledge already exists")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot tools
+		(type STRING)
+;+		(value "technology always seems to provide the answer")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot purposes
+		(type STRING)
+		(default "enhance the deployment of knowledge into practice" "knowledge integration")
+		(create-accessor read-write))
+	(single-slot access
+		(type SYMBOL)
+		(allowed-values very_slow slow fast instantaneous)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot concerning+about
+		(type INSTANCE)
+;+		(allowed-classes Information)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot looking+for
+		(type INSTANCE)
+;+		(allowed-classes Data)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot model+repositories
+		(type SYMBOL)
+		(allowed-values person-to-repository-to-person person-to-person combination-of-both)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot captures
+		(type INSTANCE)
+;+		(allowed-classes Knowledge)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot analyses
+		(type INSTANCE)
+;+		(allowed-classes Knowledge)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot knowledge-base
+		(type SYMBOL)
+		(allowed-values case-based ontology-based)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot stores
+		(type INSTANCE)
+;+		(allowed-classes Data)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot used+on
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Firm)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot benefits
+		(type STRING)
+		(default "shortened time frames" "better decisions")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot involves
+		(type INSTANCE)
+;+		(allowed-classes Person)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot acronym
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot process
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot purpose_second_generation
+;+		(comment "knowledge production and integration")
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot vision_second_generation
+;+		(comment "knowledge is something that is produced.")
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot sort
+		(type STRING)
+;+		(value "Organizational Maps" "Expertise Maps" "Concept Maps")
+		(create-accessor read-write))
+	(single-slot purposes_knowledge_map
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot links
+		(type STRING)
+;+		(value "Descriptive links" "Dynamic links" "Instructional links")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Select
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+adquisition)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Acquire
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+adquisition)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Represent
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+organization)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Encode
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+organization)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Test+%26+Evaluate
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+improving)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Knowledge+Validation+by
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+Expert)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Knowledge+Verification+by
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+Engineer)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot needs
+;+		(type ANY)
+		(create-accessor read-write))
+	(single-slot Knowledge+Base
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Explanation+Facility
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Inference+Engine
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot User+interface
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot properties
+		(type STRING)
+		(default "Supply a conceptual level" "Reuse the existing K" "Convenient and save adaptation to individual needs" "Intuitive understanding" "Support of multiple perspectives" "Integration of perspectives")
+		(create-accessor read-write))
+	(single-slot based+on
+		(type INSTANCE)
+;+		(allowed-classes Ontologies)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass KM+area
+	(is-a USER)
+	(role abstract))
+
+(defclass Artificial+Intelligence
+	(is-a KM+area)
+	(role abstract))
+
+(defclass Information+Retrieval
+	(is-a KM+area)
+	(role concrete))
+
+(defclass Management+Science
+	(is-a KM+area)
+	(role concrete))
+
+(defclass Organizational+Behaviour
+	(is-a KM+area)
+	(role concrete))
+
+(defclass Knowledge+Management
+	(is-a Artificial+Intelligence Information+Retrieval Management+Science Organizational+Behaviour)
+	(role abstract)
+	(multislot goals
+		(type STRING)
+		(create-accessor read-write))
+	(multislot enterprise+application
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Aspects)
+		(create-accessor read-write))
+	(single-slot acronym
+		(type STRING)
+		(default "KM")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass KM+tools
+	(is-a Knowledge+Management)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass KM+Strategy
+	(is-a Knowledge+Management)
+	(role concrete))
+
+(defclass KM+technologies
+	(is-a Knowledge+Management)
+	(role abstract))
+
+(defclass AI+technologies
+	(is-a Artificial+Intelligence KM+technologies)
+	(role abstract))
+
+(defclass Case-Based+Reasoning
+	(is-a AI+technologies)
+	(role concrete))
+
+(defclass Ontology-Based+KM
+	(is-a AI+technologies)
+	(role concrete))
+
+(defclass Metadata-Based+KM
+	(is-a AI+technologies)
+	(role concrete))
+
+(defclass Text+Mining
+	(is-a AI+technologies)
+	(role concrete))
+
+(defclass IR+technologies
+	(is-a Information+Retrieval KM+technologies)
+	(role abstract))
+
+(defclass Visualization+techniques
+	(is-a IR+technologies)
+	(role concrete))
+
+(defclass MS+technologies
+	(is-a Management+Science KM+technologies)
+	(role concrete))
+
+(defclass OB+techonologies
+	(is-a Organizational+Behaviour KM+technologies)
+	(role concrete))
+
+(defclass KM+technique
+	(is-a Knowledge+Management)
+	(role concrete))
+
+(defclass KM+Process
+	(is-a Knowledge+Management)
+	(role abstract))
+
+(defclass Knowledge+integration
+	(is-a KM+Process)
+	(role abstract))
+
+(defclass Knowledge+sharing
+	(is-a Knowledge+integration)
+	(role concrete))
+
+(defclass Knowledge+use
+	(is-a Knowledge+integration)
+	(role concrete))
+
+(defclass Knowledge+production
+	(is-a KM+Process)
+	(role abstract))
+
+(defclass Knowledge+adquisition
+	(is-a Knowledge+production)
+	(role concrete)
+	(single-slot Knowledge+Validation+by
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+Expert)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Knowledge+Verification+by
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+Engineer)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Knowledge+creation
+	(is-a Knowledge+production)
+	(role concrete))
+
+(defclass Knowledge+organization
+	(is-a Knowledge+production)
+	(role concrete))
+
+(defclass Knowledge+validation
+	(is-a KM+Process)
+	(role abstract))
+
+(defclass Knowledge+improving
+	(is-a Knowledge+validation)
+	(role concrete))
+
+(defclass First+Generation+Knowledge+Management "focused on the use of technologies to help user to extract knowledge and share this knowledge within the enterprise"
+	(is-a Knowledge+Management)
+	(role abstract)
+	(single-slot acronym
+		(type STRING)
+		(default "FGKM")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot vision
+		(type STRING)
+;+		(value "valuable knowledge already exists")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot tools
+		(type STRING)
+;+		(value "technology always seems to provide the answer")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot purposes
+		(type STRING)
+		(default "enhance the deployment of knowledge into practice" "knowledge integration")
+		(create-accessor read-write)))
+
+(defclass Groupware
+	(is-a First+Generation+Knowledge+Management)
+	(role abstract)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Email+and+messaging
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Group+calendaring+and+scheduling
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Electronic+Meeting+Systems
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Real-Time+data+conferencing
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Non+real-time+data+conferencing
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Group+document+handling
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Workflow
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Group+utilities+and+development+tools
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Collaborative+Internet-based+applications+and+products
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Groupware+Services
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Groupware+and+KM+frameworks
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Groupware+applications
+	(is-a Groupware)
+	(role concrete))
+
+(defclass Information+indexing+and+retrieval+systems
+	(is-a First+Generation+Knowledge+Management IR+technologies)
+	(role abstract)
+	(single-slot access
+		(type SYMBOL)
+		(allowed-values very_slow slow fast instantaneous)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot concerning+about
+		(type INSTANCE)
+;+		(allowed-classes Information)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot looking+for
+		(type INSTANCE)
+;+		(allowed-classes Data)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Disordered+lists
+	(is-a Information+indexing+and+retrieval+systems)
+	(role concrete)
+	(single-slot access
+		(type SYMBOL)
+		(allowed-values very_slow slow fast instantaneous)
+;+		(value very_slow)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Ordered+lists
+	(is-a Information+indexing+and+retrieval+systems)
+	(role concrete)
+	(single-slot access
+		(type SYMBOL)
+		(allowed-values very_slow slow fast instantaneous)
+;+		(value fast)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Hierarchical+indices
+	(is-a Information+indexing+and+retrieval+systems)
+	(role concrete)
+	(single-slot access
+		(type SYMBOL)
+		(allowed-values very_slow slow fast instantaneous)
+;+		(value fast)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Hash+tables
+	(is-a Information+indexing+and+retrieval+systems)
+	(role concrete)
+	(single-slot access
+		(type SYMBOL)
+		(allowed-values very_slow slow fast instantaneous)
+;+		(value instantaneous)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Knowledge+repositories
+	(is-a First+Generation+Knowledge+Management)
+	(role abstract)
+	(single-slot model+repositories
+		(type SYMBOL)
+		(allowed-values person-to-repository-to-person person-to-person combination-of-both)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot captures
+		(type INSTANCE)
+;+		(allowed-classes Knowledge)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot analyses
+		(type INSTANCE)
+;+		(allowed-classes Knowledge)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot knowledge-base
+		(type SYMBOL)
+		(allowed-values case-based ontology-based)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass External+knowledge+repositories
+	(is-a Knowledge+repositories)
+	(role concrete))
+
+(defclass Structured+Internal+knowledge+repositories
+	(is-a Knowledge+repositories)
+	(role concrete))
+
+(defclass Informal+Internal+knowledge+repositories
+	(is-a Knowledge+repositories)
+	(role concrete))
+
+(defclass Data+warehousing "stores historic data and information abaout an enterprise"
+	(is-a First+Generation+Knowledge+Management)
+	(role abstract)
+	(single-slot stores
+		(type INSTANCE)
+;+		(allowed-classes Data)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot used+on
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Firm)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Datamart
+	(is-a Data+warehousing)
+	(role concrete)
+	(single-slot used+on
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Department)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Imaging "the capture and storage of electronic information from hard-copy documents"
+	(is-a First+Generation+Knowledge+Management)
+	(role concrete))
+
+(defclass Knowledge+Discovery+Databases
+	(is-a First+Generation+Knowledge+Management)
+	(role abstract)
+	(single-slot acronym
+		(type STRING)
+		(default "KDD")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot process
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Selection+Data+Mining
+	(is-a Knowledge+Discovery+Databases)
+	(role abstract)
+	(single-slot process
+		(type STRING)
+		(default "information selection extracting important information")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Processing+Data+Mining
+	(is-a Knowledge+Discovery+Databases)
+	(role abstract)
+	(single-slot process
+		(type STRING)
+		(default "joining information selected by an uniform way")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Transformation+Data+Mining
+	(is-a Knowledge+Discovery+Databases)
+	(role abstract)
+	(single-slot process
+		(type STRING)
+		(default "to adapt information to our algorithm")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Data+Mining
+	(is-a Knowledge+Discovery+Databases AI+technologies)
+	(role abstract)
+	(single-slot process
+		(type STRING)
+		(default "using software tools to search patterns or classifying data")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Interpretation+%26+Evaluation
+	(is-a Knowledge+Discovery+Databases)
+	(role abstract)
+	(single-slot process
+		(type STRING)
+		(default "obtain knowledge")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Document+Management
+	(is-a First+Generation+Knowledge+Management)
+	(role abstract)
+	(single-slot benefits
+		(type STRING)
+		(default "shortened time frames" "better decisions")
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot involves
+		(type INSTANCE)
+;+		(allowed-classes Person)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Document+creation
+	(is-a Document+Management)
+	(role abstract)
+	(single-slot involves
+		(type INSTANCE)
+;+		(allowed-classes Author)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Document+review
+	(is-a Document+Management)
+	(role abstract)
+	(single-slot involves
+		(type INSTANCE)
+;+		(allowed-classes Editor)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Document+storage
+	(is-a Document+Management)
+	(role abstract))
+
+(defclass Document+dissemination
+	(is-a Document+Management)
+	(role abstract)
+	(single-slot involves
+		(type INSTANCE)
+;+		(allowed-classes Publisher)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Document+destruction
+	(is-a Document+Management)
+	(role abstract))
+
+(defclass Second+Generation+Knowledge+Management "focused on the use of technologies to generate new valuable\nknowledge, validate this knowledge and integrate it in the enterprise\nbusiness processes and business strategies."
+	(is-a Knowledge+Management)
+	(role abstract)
+	(single-slot purpose_second_generation
+;+		(comment "knowledge production and integration")
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot vision_second_generation
+;+		(comment "knowledge is something that is produced.")
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Knowledge+Life+Cycle
+	(is-a Second+Generation+Knowledge+Management)
+	(role abstract))
+
+(defclass Simplified+Knowledge+Life+Cycle
+	(is-a Knowledge+Life+Cycle)
+	(role abstract))
+
+(defclass Knowledge+Production
+	(is-a Simplified+Knowledge+Life+Cycle)
+	(role concrete))
+
+(defclass Knowledge+Claims
+	(is-a Simplified+Knowledge+Life+Cycle)
+	(role concrete))
+
+(defclass Knowledge+Validation
+	(is-a Simplified+Knowledge+Life+Cycle)
+	(role concrete))
+
+(defclass Organizational+Knowledge
+	(is-a Simplified+Knowledge+Life+Cycle)
+	(role concrete))
+
+(defclass Knowledge+Integration
+	(is-a Simplified+Knowledge+Life+Cycle)
+	(role concrete))
+
+(defclass Alternative+Life+Cycle+%28Liebowitz%29
+	(is-a Knowledge+Life+Cycle)
+	(role abstract))
+
+(defclass Transform+Information+into+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Identify+%26+Verify+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Capture+%26+Secure+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Organize+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Retrieve+%26+Apply+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Combine+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Create+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Learn+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Distribute%2FSell+Knowledge
+	(is-a Alternative+Life+Cycle+%28Liebowitz%29)
+	(role concrete))
+
+(defclass Alternative+Life+Cycle+%28Liebowitz%26Beckman%29
+	(is-a Knowledge+Life+Cycle)
+	(role abstract))
+
+(defclass Identify "is to determine competencies, sourcing strategy,\nand knowledge domains."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass Capture "the existing knowledge is formalized during this phase."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass Select "consists on assessing knowledge relevance,\nvalue and accuracy, and resolve conflicting\nknowledge."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass Store "The knowledge is stored by representing the\ncorporate memory in a knowledge repository with\nvarious knowledge schema."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass Share "Then, the stored knowledge can be shared and finally applied in making decisions, solving problems, automating or supporting work, job aids, and training."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass Create "New knowledge can be discovered (with or\nwithout the use of the previous one) through\nresearch, experimenting, and creative thinking."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass Sell "Apart of applying the knowledge in stage 6, it can\nbe also sell. That’s to say, new knowledge-based\nproducts and services can be developed and\nmarketed."
+	(is-a Alternative+Life+Cycle+%28Liebowitz%26Beckman%29)
+	(role concrete))
+
+(defclass The+SMART+KM+Life+Cycle "(Liebowitz, Rubenstein-Montaro, Buchwalter)"
+	(is-a Knowledge+Life+Cycle)
+	(role abstract))
+
+(defclass Strategize "Analysis"
+	(is-a The+SMART+KM+Life+Cycle)
+	(role concrete))
+
+(defclass Model "design"
+	(is-a The+SMART+KM+Life+Cycle)
+	(role abstract))
+
+(defclass Knowledge+Audit "(list types and sources of K, competencies, weaknesses, organization\nand knowledge flows, etc"
+	(is-a Model)
+	(role abstract))
+
+(defclass Identify+currently+existing+knowledge
+	(is-a Knowledge+Audit)
+	(role concrete))
+
+(defclass Identify+the+currently+missing+knowledge
+	(is-a Knowledge+Audit)
+	(role concrete))
+
+(defclass Provide+recommendations
+	(is-a Knowledge+Audit)
+	(role concrete))
+
+(defclass Knowledge+Auditing+Algorithm "• What are the categories of knowledge in the targeted area?\n• Which of them are currently available?\n• If available,\n– How this knowledge is used?\n– What are the sources of this knowledge?\n– Who is using this knowledge? How often?\n– Who are new potential users of this knowledge?\n– What’s the process or processes to obtain that knowledge?\n– How is this knowledge adding value or benefit?\n– What influences this knowledge?\n– What are the elements that identify, use, or transform this knowledge?\n– How is this knowledge delivered from? Are there other delivering alternatives?\n– Who are the experts (in the company) in this sort of knowledge?\n• What categories of knowledge do you need to do your work better?\n• For all of them,\n– How much your work can be improved from it?\n– What are the potential sources of this knowledge?\n– What are your unanswered questions? For each one,\n• What is the sort of knowledge missed?\n• Which departments/people could answer these open questions?\n• Which departments/people are looking for similar answers? For each one,\n– What level in the organization this department/person has?\n– If a person, how old is this person in the company?\n– Why did they ask these questions similar to yours?\n– Is someone in the organization putting barriers to this sort of KM?\n– What are the main reasons to make errors/mistakes concerning this knowledge?"
+	(is-a Knowledge+Audit)
+	(role concrete))
+
+(defclass Act "implement"
+	(is-a The+SMART+KM+Life+Cycle)
+	(role concrete))
+
+(defclass Revise "test"
+	(is-a The+SMART+KM+Life+Cycle)
+	(role concrete))
+
+(defclass Transfer "implantation and update"
+	(is-a The+SMART+KM+Life+Cycle)
+	(role concrete))
+
+(defclass Knowledge+Processes "any of the processes involved in\nthe KM life cycle"
+	(is-a Second+Generation+Knowledge+Management)
+	(role concrete))
+
+(defclass Knowledge+Rules
+	(is-a Second+Generation+Knowledge+Management)
+	(role concrete))
+
+(defclass Knowledge+Structures
+	(is-a Second+Generation+Knowledge+Management)
+	(role abstract))
+
+(defclass Knowledge+Map "Representation of the knowledge inside the company"
+	(is-a Knowledge+Structures)
+	(role abstract)
+	(multislot sort
+		(type STRING)
+;+		(value "Organizational Maps" "Expertise Maps" "Concept Maps")
+		(create-accessor read-write)))
+
+(defclass Purposes
+	(is-a Knowledge+Map)
+	(role abstract))
+
+(defclass Generate+ideas
+	(is-a Purposes)
+	(role concrete))
+
+(defclass Design+a+complex+structure
+	(is-a Purposes)
+	(role concrete))
+
+(defclass Communicate+complex+ideas
+	(is-a Purposes)
+	(role concrete))
+
+(defclass Aid+learning+by+integrating+new+and+old+knowledge
+	(is-a Purposes)
+	(role concrete))
+
+(defclass Assess+understanding
+	(is-a Purposes)
+	(role concrete))
+
+(defclass Diagnose+misunderstanding
+	(is-a Purposes)
+	(role concrete))
+
+(defclass Semantic+Knoledge+Maps "The links in the Map have a meaning."
+	(is-a Knowledge+Map)
+	(role abstract)
+	(single-slot links
+		(type STRING)
+;+		(value "Descriptive links" "Dynamic links" "Instructional links")
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Constructing+Semantics+Knowledge+Maps "1. Make a list of important concepts or main ideas.\n2. For each concept or idea,\n2.1. Add a node in the map, labeled with the concept.\n2.2. Ask the following questions and draw links on the map,\n2.2.1. Can this concept be broken down into sub concepts (T-link)?\n2.2.2. For each sub concept or concept type,\n2.2.2.1. What are the features of that type (C-link)?\n2.2.2.2. What are the important parts of that type (P-link)?\n2.2.2.3. For a each part, what are the features (C-link)?\n2.2.3. What led to the starting node (L-link)?\n2.2.4. What does the starting node lead to (L-link)?\n2.2.5. Which things influence the starting node (I-link)?\n2.2.6. What does the starting node influence (I-link)?\n2.2.7. What happens next (N-link)?\n2.2.8. Does anything require an analogy, remark or example (A,S,E-links)?\n3. Review the map"
+	(is-a Semantic+Knoledge+Maps)
+	(role concrete))
+
+(defclass Nested+Knowledge+Domain "• Enterprises have different levels of abstraction: the whole company,\nthe departments, the working groups, the individuals, etc.\n• Each member of a level can have its own competencies and\ntherefore its own knowledge life cycle."
+	(is-a Second+Generation+Knowledge+Management)
+	(role concrete))
+
+(defclass KM+Modelling
+	(is-a Knowledge+Management)
+	(role concrete))
+
+(defclass XML "XML specifies the structure and content of a document"
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass HTML "HTML was designed for formatting text on a Web page"
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass XSL "eXtensible Stylesheet Language (XSL): transforms XML into HTML before it is displayed by the browser"
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass DTD "XML document that defines the content structure of other XML documents."
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass XPath "locates information in XML documents."
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass RDF "RDF was designed for describing resources on the web."
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass RDF+Scheme "RDFS provides the framework to describe application-specific classes and properties"
+	(is-a RDF)
+	(role concrete))
+
+(defclass OWL "OWL is built on top of RDF and written in XML"
+	(is-a KM+Modelling)
+	(role concrete))
+
+(defclass OWL+full
+	(is-a OWL)
+	(role concrete))
+
+(defclass OWL+DL
+	(is-a OWL)
+	(role concrete))
+
+(defclass OWL+lite
+	(is-a OWL)
+	(role concrete))
+
+(defclass KM+Engineering
+	(is-a Knowledge+Management)
+	(role concrete)
+	(single-slot KE+Select
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+adquisition)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Acquire
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+adquisition)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Represent
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+organization)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Encode
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+organization)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot KE+Test+%26+Evaluate
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+improving)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Business+Views
+	(is-a USER)
+	(role abstract)
+	(single-slot power
+;+		(type ANY)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot foster
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot company+outputs
+		(type STRING)
+		(create-accessor read-write))
+	(single-slot created+by
+;+		(type ANY)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass New+Vision
+	(is-a Business+Views)
+	(role concrete))
+
+(defclass Old+Vision
+	(is-a Business+Views)
+	(role concrete))
+
+(defclass Data
+	(is-a USER)
+	(role abstract)
+	(single-slot value
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Information "information= data+meaning"
+	(is-a Data)
+	(role abstract)
+	(single-slot context
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot meaning
+		(type SYMBOL)
+		(allowed-values Contextualization Categorization Calculation Correction Condensation)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Knowledge "knowledge=generalized information"
+	(is-a Information)
+	(role abstract)
+	(single-slot generalization+processes
+		(type SYMBOL)
+		(allowed-values Comparison Consequences Connections Conservations)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot evidence
+		(type SYMBOL)
+		(allowed-values explicit implicit)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot purpose
+		(type SYMBOL)
+		(allowed-values know-what know-how)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot ownership
+		(type SYMBOL)
+		(allowed-values individual group organizational)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot format
+		(type SYMBOL)
+		(allowed-values informal semi-structured structured formal)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Wisdom "wisdom=knowledge+intuition+experience"
+	(is-a Knowledge)
+	(role abstract)
+	(single-slot intuition
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot experience
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Knowledge+Representation
+	(is-a Knowledge)
+	(role abstract)
+	(multislot aspects
+		(type SYMBOL)
+		(allowed-values syntactic semantic reasoning)
+		(create-accessor read-write))
+	(single-slot inference+aspects
+		(type SYMBOL)
+		(allowed-values forward_chaining backward_chaining)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot knowledge-base+aspects
+		(type SYMBOL)
+		(allowed-values completeness soundness)
+		(create-accessor read-write)))
+
+(defclass Knowledge+Models
+	(is-a Artificial+Intelligence Knowledge+Representation)
+	(role abstract))
+
+(defclass Frames
+	(is-a Knowledge+Models)
+	(role concrete)
+	(multislot contains
+		(type INSTANCE)
+;+		(allowed-classes Slot Facet Demon)
+		(create-accessor read-write))
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot instance
+		(type INSTANCE)
+;+		(allowed-classes Instance)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Scripts
+	(is-a Knowledge+Models)
+	(role concrete)
+	(multislot script+contains
+		(type INSTANCE)
+;+		(allowed-classes Property Role Condition Scene Result)
+		(create-accessor read-write)))
+
+(defclass Semantic+Networks
+	(is-a Knowledge+Models)
+	(role abstract))
+
+(defclass Definitional+Network
+	(is-a Semantic+Networks)
+	(role concrete))
+
+(defclass Assertional+Network
+	(is-a Semantic+Networks)
+	(role concrete))
+
+(defclass Implicational+Network
+	(is-a Semantic+Networks)
+	(role concrete))
+
+(defclass Executable+Network
+	(is-a Semantic+Networks)
+	(role concrete))
+
+(defclass Learning+Network
+	(is-a Semantic+Networks)
+	(role concrete))
+
+(defclass Hybrid+Network
+	(is-a Semantic+Networks)
+	(role concrete))
+
+(defclass Rules
+	(is-a Knowledge+Models)
+	(role concrete)
+	(single-slot syntactic+type
+		(type SYMBOL)
+		(allowed-values conjunctive disjunctive K-term_DNF K-DNF K-CNF)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot rule+type
+		(type SYMBOL)
+		(allowed-values syntactic semantic)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot structure
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot selectors
+		(type STRING)
+		(create-accessor read-write)))
+
+(defclass Ontologies
+	(is-a Knowledge+Models)
+	(role concrete))
+
+(defclass Enterprise+Aspects
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Enterprise+Firm
+	(is-a USER)
+	(role concrete)
+	(single-slot type
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot model+enterprise
+		(type SYMBOL)
+		(allowed-values s.e.f)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot business+view
+		(type SYMBOL)
+;+		(allowed-parents Business+Views)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot aspect
+		(type INSTANCE)
+;+		(allowed-classes Enterprise+Aspects)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Enterprise+Department
+	(is-a Enterprise+Firm)
+	(role concrete))
+
+(defclass Slot
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot contains
+		(type INSTANCE)
+;+		(allowed-classes Slot Facet Demon)
+		(create-accessor read-write)))
+
+(defclass Facet
+	(is-a USER)
+	(role concrete)
+	(single-slot facet+type
+		(type SYMBOL)
+		(allowed-values values default range other)
+;+		(cardinality 1 1)
+		(create-accessor read-write))
+	(single-slot facet+value
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write)))
+
+(defclass Demon
+	(is-a USER)
+	(role concrete)
+	(single-slot demon+type
+		(type SYMBOL)
+		(allowed-values if-added if-needed)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot demon+value
+		(type STRING)
+;+		(cardinality 1 1)
+		(create-accessor read-write)))
+
+(defclass Instance
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Property
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot property+value
+		(type STRING)
+		(create-accessor read-write)))
+
+(defclass Role
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot role+value
+		(type STRING)
+		(create-accessor read-write)))
+
+(defclass Condition
+	(is-a USER)
+	(role concrete)
+	(single-slot type+condition
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Scene
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot scene+value
+		(type STRING)
+		(create-accessor read-write)))
+
+(defclass Result
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(multislot result+value
+		(type STRING)
+		(create-accessor read-write)))
+
+(defclass Person
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Author
+	(is-a Person)
+	(role concrete))
+
+(defclass Editor
+	(is-a Person)
+	(role concrete))
+
+(defclass Publisher
+	(is-a Person)
+	(role concrete))
+
+(defclass Knowledge+Expert
+	(is-a Person)
+	(role concrete))
+
+(defclass Knowledge+Engineer
+	(is-a Person)
+	(role concrete))
+
+(defclass Computer+Systems
+	(is-a USER)
+	(role concrete)
+	(single-slot name_
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass Expert+Systems
+	(is-a Computer+Systems)
+	(role concrete)
+	(multislot needs
+;+		(type ANY)
+		(create-accessor read-write))
+	(single-slot Knowledge+Base
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Explanation+Facility
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot Inference+Engine
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write))
+	(single-slot User+interface
+		(type STRING)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))
+
+(defclass First+Generation+ES
+	(is-a Expert+Systems)
+	(role concrete)
+	(multislot needs
+		(type INSTANCE)
+;+		(allowed-classes Knowledge+Expert Knowledge+Engineer)
+		(create-accessor read-write)))
+
+(defclass Second+Generation+ES
+	(is-a Expert+Systems)
+	(role concrete)
+	(multislot needs
+		(type STRING)
+		(default "Machine Learning")
+		(create-accessor read-write)))
+
+(defclass Knowledge+Management+System
+	(is-a Computer+Systems)
+	(role concrete)
+	(multislot properties
+		(type STRING)
+		(default "Supply a conceptual level" "Reuse the existing K" "Convenient and save adaptation to individual needs" "Intuitive understanding" "Support of multiple perspectives" "Integration of perspectives")
+		(create-accessor read-write)))
+
+(defclass Web+Systems
+	(is-a Computer+Systems)
+	(role concrete))
+
+(defclass Semantic+Web+Vision
+	(is-a Web+Systems)
+	(role concrete)
+	(single-slot based+on
+		(type INSTANCE)
+;+		(allowed-classes Ontologies)
+;+		(cardinality 0 1)
+		(create-accessor read-write)))

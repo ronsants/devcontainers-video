@@ -1,0 +1,259 @@
+
+UU_Pretty.hs@28@  newtype PP_Doc = PPDoc T_PPS
+UU_Pretty.hs@29@  class Show a => PP a where
+UU_Pretty.hs@31@    pp       = text . show
+UU_Pretty.hs@33@    ppList as = if null as
+UU_Pretty.hs@37@    pp     = id
+UU_Pretty.hs@39@    pp c   = text [c]
+UU_Pretty.hs@40@    ppList = text
+UU_Pretty.hs@41@  instance PP a => PP [a] where
+UU_Pretty.hs@42@    pp = ppList
+UU_Pretty.hs@44@    show p = disp p 200 ""
+UU_Pretty.hs@49@  empty = PPDoc sem_PPS_Empty
+UU_Pretty.hs@51@  text  = PPDoc . sem_PPS_Text
+UU_Pretty.hs@52@  indent :: PP a => Int -> a -> PP_Doc
+UU_Pretty.hs@53@  indent i fs = PPDoc (sem_PPS_Indent i nfs)
+UU_Pretty.hs@54@     where (PPDoc nfs) = pp fs
+UU_Pretty.hs@57@    where (PPDoc ppl) = pp l
+UU_Pretty.hs@58@          (PPDoc ppr) = pp r
+UU_Pretty.hs@59@  (>-<) :: (PP a, PP b) => a -> b -> PP_Doc
+UU_Pretty.hs@60@  u >-< l  = PPDoc (sem_PPS_Above ppu ppl)
+UU_Pretty.hs@61@    where (PPDoc ppu) = pp u
+UU_Pretty.hs@62@          (PPDoc ppl) = pp l
+UU_Pretty.hs@63@  fill :: PP a => [a] -> PP_Doc
+UU_Pretty.hs@64@  fill = PPDoc . sem_PPS_Fill . foldr fill_alg sem_FillList_Nil
+UU_Pretty.hs@66@            = sem_FillList_Cons (case (pp f) of (PPDoc ppp) -> ppp)
+UU_Pretty.hs@67@  fillblock :: PP a => Int -> [a] -> PP_Doc
+UU_Pretty.hs@68@  fillblock i = PPDoc . sem_PPS_FillBlock i . foldr fill_alg sem_FillList_Nil
+UU_Pretty.hs@70@            = sem_FillList_Cons (case (pp f) of (PPDoc ppp) -> ppp)
+UU_Pretty.hs@74@  (>//<) :: (PP a, PP b) => a -> b -> PP_Doc
+UU_Pretty.hs@75@  a  >//<  b  = PPDoc (sem_PPS_Dup  ppa ppb)
+UU_Pretty.hs@76@    where (PPDoc ppa) = pp a
+UU_Pretty.hs@77@          (PPDoc ppb) = pp b
+UU_Pretty.hs@79@  join (PPDoc d) = PPDoc . sem_PPS_Join $ d
+UU_Pretty.hs@80@  newtype PP_Exp = PPExp T_PPC
+UU_Pretty.hs@82@  eindent i (PPExp ppc) = PPExp (sem_PPC_Indent i ppc)
+UU_Pretty.hs@85@  (PPExp u)  >>-<< (PPExp l)  =  PPExp (sem_PPC_Above  u l)
+UU_Pretty.hs@86@  (PPExp a) >>//<< (PPExp b)  =  PPExp (sem_PPC_Dup    a b)
+UU_Pretty.hs@88@  ejoin (PPExp dc) = PPExp . sem_PPC_Join $ dc
+UU_Pretty.hs@90@  par = PPExp sem_PPC_Par
+UU_Pretty.hs@91@  (>>$<) :: PP a => PP_Exp -> [a] -> PP_Doc
+UU_Pretty.hs@92@  (PPExp e) >>$< pl = PPDoc . sem_PPS_Apply e . foldr ppslist sem_PPSArgs_Nil $ pl
+UU_Pretty.hs@93@    where ppslist p = sem_PPSArgs_Cons (case (pp p) of (PPDoc ppp) -> ppp)
+UU_Pretty.hs@95@  (PPExp e) >>$<< pl = PPExp . sem_PPC_Apply e . foldr ppclist sem_PPCArgs_Nil $ pl
+UU_Pretty.hs@96@    where ppclist (PPExp p) = sem_PPCArgs_Cons p
+UU_Pretty.hs@101@  render    (PPDoc fs)  =  putStr . sem_Root_Best fs
+UU_Pretty.hs@102@  renderAll (PPDoc fs)  =  putStr . sem_Root_All fs
+UU_Pretty.hs@104@  disp (PPDoc fs) =  sem_Disp_Disp fs
+UU_Pretty.hs@108@  c2e :: PP a => a -> PP_Exp
+UU_Pretty.hs@109@  c2e s = let (PPDoc s') = pp s in PPExp . sem_PPC_Pps $ s'
+UU_Pretty.hs@111@  element_h1 = \(PPDoc fs) -> PPDoc (sem_PPS_Filt fs)
+UU_Pretty.hs@113@  eelement_h1 (PPExp pe) = PPExp . sem_PPC_Filt $ pe
+UU_Pretty.hs@114@  vcenter :: PP a => [ a ] -> PP_Doc
+UU_Pretty.hs@115@  vcenter = PPDoc . sem_PPS_Center . foldr center_alg sem_CenterList_Nil
+UU_Pretty.hs@116@    where center_alg f = sem_CenterList_Cons (case (pp f) of (PPDoc pf) -> pf)
+UU_Pretty.hs@118@  invisible (PPDoc a) = PPDoc . sem_PPS_Inv $ a
+UU_Pretty.hs@123@  fpar = plift  first   par
+UU_Pretty.hs@124@  spar = plift  second  par
+UU_Pretty.hs@125@  first fs  = case fs of
+UU_Pretty.hs@128@  second fs = case fs of
+UU_Pretty.hs@134@  lift f (PPDoc p) = PPDoc . sem_LiftS_Lift p $ f
+UU_Pretty.hs@136@  elift f (PPExp e) = PPExp . sem_LiftC_Lift e $ f
+UU_Pretty.hs@138@  plift f (PPExp e) = PPExp . sem_LiftC_Pair e $ f
+UU_Pretty.hs@142@  type Formats = [Format]
+UU_Pretty.hs@145@  type T_PW  = Int
+UU_Pretty.hs@146@  type T_PLL = Int
+UU_Pretty.hs@147@  type T_PH  = Int
+UU_Pretty.hs@150@  data T_Frame = F  T_PW   T_PLL
+UU_Pretty.hs@159@  text_fmts s = [ s2fmt s ]
+UU_Pretty.hs@161@  indent_fmts (F pw _) i = map (indent_fmt i)
+UU_Pretty.hs@163@  notFits delta e = total_w e > delta
+UU_Pretty.hs@166@    = mergel [ map (l `beside_fmt`)
+UU_Pretty.hs@172@    = (total_w x `max` (last_w x + total_w y)) > pw
+UU_Pretty.hs@179@    where utw = total_w upper
+UU_Pretty.hs@180@          ltw = total_w lower
+UU_Pretty.hs@181@          firstelem = upper `above_fmt` lower
+UU_Pretty.hs@185@  error_indent i = map (indent_fmt i)
+UU_Pretty.hs@187@  error_beside left right = mergel [ map (l `beside_fmt`) right
+UU_Pretty.hs@193@  data Format = Elem { height  :: T_PH
+UU_Pretty.hs@199@    x == y =  height x  == height y
+UU_Pretty.hs@200@           && total_w x == total_w y
+UU_Pretty.hs@201@           && last_w  x == last_w  y
+UU_Pretty.hs@203@    x <  y =  height x < height y
+UU_Pretty.hs@207@  s2fmt s   = Elem 1 l l (\_ -> (s++))
+UU_Pretty.hs@208@    where l = length s
+UU_Pretty.hs@211@     = Elem dh (i + dl) (i + dw) (\n -> ((sp i) ++) . dt (i + n))
+UU_Pretty.hs@214@    = Elem (uh + lh) ll (uw `max` lw)
+UU_Pretty.hs@216@    where make_ts_above ut lt = \n -> let nl_skip = (('\n':sp n)++)
+UU_Pretty.hs@219@    = Elem (lh + rh - 1) (ll + rl)
+UU_Pretty.hs@224@  best fs  = if null fs then "" else (txtstr . head $ fs) 0 ""
+UU_Pretty.hs@225@  allf     = concatMap (\fmt -> (txtstr fmt) 0 "\n\n")
+UU_Pretty.hs@226@  dispf fs = if null fs then id else (txtstr . head $ fs) 0
+UU_Pretty.hs@236@  spaces = ' ':spaces
+UU_Pretty.hs@237@  sp n = if n >= 0 then take n spaces else ""
+UU_Pretty.hs@238@  mergel :: Ord a => [[a]] -> [a]
+UU_Pretty.hs@243@  narrow_frame i  (F s l) = F (s - i)  (l - i)
+UU_Pretty.hs@244@  narrow_ll    i  (F s l) = F s        (l - i)
+UU_Pretty.hs@245@  type T_Mins  = [ (T_PW, T_PLL, T_PH) ]
+UU_Pretty.hs@246@  set_var_apply cond va vb = if cond then va else vb
+UU_Pretty.hs@247@  type T_Reqs  = [ T_Frame ]
+UU_Pretty.hs@248@  type T_Fmts = [ T_Formats ]
+UU_Pretty.hs@249@  type T_Errs = [ T_Error ]
+UU_Pretty.hs@255@  type T_Error = Bool
+UU_Pretty.hs@256@  data T_Formats = AFormat   Formats
+UU_Pretty.hs@258@  afmt_txt = AFormat . text_fmts
+UU_Pretty.hs@259@  set_fmts_empty = AFormat empty_fmts
+UU_Pretty.hs@261@    = afmt_txt (if error then (asts minw) else string)
+UU_Pretty.hs@268@            = case fmts of
+UU_Pretty.hs@274@    = set_fmts_ab ls rs set_fmts_beside' "<Error: can't beside two pairs>"
+UU_Pretty.hs@276@            = set_ab (lh == 0) (rh == 0) as bs
+UU_Pretty.hs@280@    = set_fmts_ab us ls set_fmts_above' "<Error: can't above two pairs>"
+UU_Pretty.hs@281@    where set_fmts_above' as bs = set_ab (uh == 0) (lh == 0) as bs above_fmts
+UU_Pretty.hs@283@    = if aempty       {- left operand empty?  -}
+UU_Pretty.hs@289@    = case fs of
+UU_Pretty.hs@303@    = if (ae && be)
+UU_Pretty.hs@306@                 = case fs of
+UU_Pretty.hs@309@               afmts = get_fmts afs
+UU_Pretty.hs@310@               bfmts = get_fmts bfs
+UU_Pretty.hs@313@    = ( AFormat $ if be
+UU_Pretty.hs@321@    = if err then (fs, err)
+UU_Pretty.hs@323@  set_fmts_apply True  a  _  =  a
+UU_Pretty.hs@324@  set_fmts_apply False _  b  =  b
+UU_Pretty.hs@329@    = "<Error: incorrect apply expression. #pars "
+UU_Pretty.hs@330@    ++ show numpars ++ " /= #args "
+UU_Pretty.hs@332@  asts 0 = ""
+UU_Pretty.hs@333@  asts 1 = "*"
+UU_Pretty.hs@334@  asts s = '<' : replicate (s-2) '*' ++ ">"
+UU_Pretty.hs@336@    = if an /= bn then afmt_txt em
+UU_Pretty.hs@339@    =  "<Error: incorrect choice expression. #pars left " ++ show apars
+UU_Pretty.hs@340@    ++ " /= #pars right " ++ show bpars
+UU_Pretty.hs@343@    = case nfmts of
+UU_Pretty.hs@344@        AFormat ns -> if ih == 0                       {- left operand empty?   -}
+UU_Pretty.hs@346@                      else if nh == 0                  {- right operand empty?  -}
+UU_Pretty.hs@348@                           else if nh <= 1
+UU_Pretty.hs@356@            = set_ab (ih == 0) (nh == 0) fs ifmts (choose_ab error_beside)
+UU_Pretty.hs@357@          choose_ab bsd_fc = if avail then bsd_fc else above_fmts
+UU_Pretty.hs@359@    = if pw < 0
+UU_Pretty.hs@364@  type T_Function = T_Formats -> T_Formats
+UU_Pretty.hs@366@    = if null height1 then ( afmt_txt . asts $ minw , True  )
+UU_Pretty.hs@368@    where height1 = takeWhile ((<=1).height) fs
+UU_Pretty.hs@370@    = ( afmt_txt $ "<Error: can not filter a pair>", True )
+UU_Pretty.hs@372@    = case fs of
+UU_Pretty.hs@376@  type T_SynPPS = ( T_Formats, T_Error, T_PH, T_PLL, T_PW )
+UU_Pretty.hs@378@    = sem_PPS_Above (\frame -> fmts) (sem_PPS_Indent spaces pPS) frame
+UU_Pretty.hs@382@  type T_PPS =  T_Frame ->(T_Formats,T_Error,T_PH,T_PLL,T_PW)
+UU_Pretty.hs@386@  sem_PPS_Empty lhs_frame =  ( (set_fmts_empty), False, 0, (0), (0) )
+UU_Pretty.hs@389@   = let{ minw = (length string)
+UU_Pretty.hs@390@     ;    error = (minw > pw)
+UU_Pretty.hs@391@     ;    f@(F pw _ ) = (lhs_frame)
+UU_Pretty.hs@395@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (narrow_frame int lhs_frame)
+UU_Pretty.hs@396@     ;    minw = (int + pPS_minw)
+UU_Pretty.hs@397@     ;    f@(F pw _ ) = (lhs_frame)
+UU_Pretty.hs@406@   = let{ ( left_fmts, left_error, left_maxh, left_minll, left_minw )  = left (narrow_ll right_minw lhs_frame)
+UU_Pretty.hs@407@     ;    ( right_fmts, right_error, right_maxh, right_minll, right_minw )  = right (narrow_frame left_minll lhs_frame)
+UU_Pretty.hs@409@     ;    fe@(bfmts,berror) = (set_fmts_beside left_fmts right_fmts left_maxh right_maxh lhs_frame error)
+UU_Pretty.hs@418@   = let{ ( upper_fmts, upper_error, upper_maxh, upper_minll, upper_minw )  = upper lhs_frame
+UU_Pretty.hs@419@     ;    ( lower_fmts, lower_error, lower_maxh, lower_minll, lower_minw )  = lower lhs_frame
+UU_Pretty.hs@420@     ;    fe@(afmts,aerror) = (set_fmts_above upper_fmts lower_fmts upper_maxh lower_maxh)
+UU_Pretty.hs@429@   = let{ ( opta_fmts, opta_error, opta_maxh, opta_minll, opta_minw )  = opta lhs_frame
+UU_Pretty.hs@430@     ;    ( optb_fmts, optb_error, optb_maxh, optb_minll, optb_minw )  = optb lhs_frame
+UU_Pretty.hs@431@     ;    minw = (opta_minw `min` optb_minw)
+UU_Pretty.hs@432@     ;    error = (opta_error && optb_error)
+UU_Pretty.hs@441@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS lhs_frame
+UU_Pretty.hs@442@     ;    fe@(jfmts,jerror) = (set_fmts_join pPS_fmts pPS_error)
+UU_Pretty.hs@446@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@447@           = pPC (pPSArgs_error) (pPSArgs_fmts) lhs_frame (pPSArgs_mins)
+UU_Pretty.hs@448@     ;    ( pPSArgs_error, pPSArgs_fmts, pPSArgs_mins, pPSArgs_len )  = pPSArgs pPC_reqs
+UU_Pretty.hs@449@     ;    error = (set_var_apply error_cond True pPC_error)
+UU_Pretty.hs@450@     ;    error_cond = (pPC_numpars /= pPSArgs_len)
+UU_Pretty.hs@451@     ;    lem = (length error_msg)
+UU_Pretty.hs@452@     ;    error_msg = (set_error_msg pPC_numpars pPSArgs_len)
+UU_Pretty.hs@461@   = let{ ( fillList_fmts, fillList_error, fillList_maxh, fillList_minw, fillList_minll )
+UU_Pretty.hs@462@           = fillList (empty_fmts) (False) (0) (0) (0) (F w w) (w)
+UU_Pretty.hs@463@     ;    f@(F w _ ) = (lhs_frame)
+UU_Pretty.hs@467@   = let{ ( fillList_fmts, fillList_error, fillList_maxh, fillList_minw, fillList_minll )
+UU_Pretty.hs@468@           = fillList (empty_fmts) (False) (0) (0) (0) (f_frame) (f_width)
+UU_Pretty.hs@469@     ;    f@(F w _ ) = (lhs_frame)
+UU_Pretty.hs@470@     ;    f_width = (if int > w then w else int)
+UU_Pretty.hs@471@     ;    f_frame = (if int > w then lhs_frame else (F int int))
+UU_Pretty.hs@472@     ;    error = (or [int < 0, fillList_error])
+UU_Pretty.hs@476@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS lhs_frame
+UU_Pretty.hs@477@     ;    ef@(fmts,error) = (set_fmts_filt pPS_fmts pPS_minw)
+UU_Pretty.hs@481@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (F maxBound maxBound)
+UU_Pretty.hs@485@   = let{ ( centerList_maxw, centerList_fmts )  = centerList (centerList_maxw) (sem_PPS_Empty lhs_frame) lhs_frame
+UU_Pretty.hs@486@     ;    clf@(fmts,error,maxh,minll,minw) = (centerList_fmts)
+UU_Pretty.hs@490@  type T_PPC =  T_Errs -> T_Fmts -> T_Frame -> T_Mins ->
+UU_Pretty.hs@496@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@497@           = pPC lhs_fillerrs lhs_fillfmts (narrow_frame int lhs_frame) lhs_fillmins
+UU_Pretty.hs@498@     ;    minw = (int + pPC_minw)
+UU_Pretty.hs@499@     ;    f@(F pw _ ) = (lhs_frame)
+UU_Pretty.hs@510@   = let{ ( left_fmts, left_error, left_maxh, left_reqs, left_minll, left_minw, left_numpars )
+UU_Pretty.hs@511@           = left (les) (lfs) (narrow_ll right_minw lhs_frame) (lim)
+UU_Pretty.hs@513@           = right (res) (rfs) (narrow_frame left_minll lhs_frame) (rim)
+UU_Pretty.hs@514@     ;    i@(lim,rim) = (splitAt left_numpars lhs_fillmins)
+UU_Pretty.hs@515@     ;    e@(les,res) = (splitAt left_numpars lhs_fillerrs)
+UU_Pretty.hs@516@     ;    m@(lfs,rfs) = (splitAt left_numpars lhs_fillfmts)
+UU_Pretty.hs@518@     ;    fe@(bfmts,berror) = (set_fmts_beside left_fmts right_fmts left_maxh right_maxh lhs_frame error)
+UU_Pretty.hs@529@   = let{ ( upper_fmts, upper_error, upper_maxh, upper_reqs, upper_minll, upper_minw, upper_numpars )
+UU_Pretty.hs@530@           = upper (ues) (ufs) lhs_frame (uim)
+UU_Pretty.hs@532@           = lower (les) (lfs) lhs_frame (lim)
+UU_Pretty.hs@533@     ;    i@(uim,lim) = (splitAt upper_numpars lhs_fillmins)
+UU_Pretty.hs@534@     ;    e@(ues,les) = (splitAt upper_numpars lhs_fillerrs)
+UU_Pretty.hs@535@     ;    m@(ufs,lfs) = (splitAt upper_numpars lhs_fillfmts)
+UU_Pretty.hs@536@     ;    fe@(afmts,aerror) = (set_fmts_above upper_fmts lower_fmts upper_maxh lower_maxh)
+UU_Pretty.hs@547@   = let{ ( opta_fmts, opta_error, opta_maxh, opta_reqs, opta_minll, opta_minw, opta_numpars )
+UU_Pretty.hs@548@           = opta lhs_fillerrs lhs_fillfmts lhs_frame lhs_fillmins
+UU_Pretty.hs@550@           = optb lhs_fillerrs lhs_fillfmts lhs_frame lhs_fillmins
+UU_Pretty.hs@551@     ;    minw = (opta_minw `min` optb_minw)
+UU_Pretty.hs@552@     ;    error = (or [opta_numpars /= optb_numpars, opta_error && optb_error])
+UU_Pretty.hs@553@     ;    error_msg = (set_error_msg' opta_numpars optb_numpars)
+UU_Pretty.hs@564@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@565@           = pPC lhs_fillerrs lhs_fillfmts lhs_frame lhs_fillmins
+UU_Pretty.hs@566@     ;    fe@(jfmts,jerror) = (set_fmts_join pPC_fmts pPC_error)
+UU_Pretty.hs@570@   = let{ m@(minw,minll,maxh) = (head lhs_fillmins)
+UU_Pretty.hs@571@     ;    error = (head lhs_fillerrs)
+UU_Pretty.hs@572@     ;    fmts = (head lhs_fillfmts)
+UU_Pretty.hs@576@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@577@           = pPC (pPCArgs_error) (pPCArgs_fmts) (lhs_frame) (pPCArgs_ofillmins)
+UU_Pretty.hs@579@           = pPCArgs (lhs_fillerrs) (lhs_fillfmts) (pPC_reqs) (lhs_fillmins)
+UU_Pretty.hs@580@     ;    error = (set_var_apply error_cond True pPC_error)
+UU_Pretty.hs@581@     ;    error_cond = (pPC_numpars /= pPCArgs_len)
+UU_Pretty.hs@582@     ;    lem = (length error_msg)
+UU_Pretty.hs@583@     ;    error_msg = (set_error_msg pPC_numpars pPCArgs_len)
+UU_Pretty.hs@594@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS lhs_frame
+UU_Pretty.hs@598@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@599@           = pPC lhs_fillerrs lhs_fillfmts lhs_frame lhs_fillmins
+UU_Pretty.hs@600@     ;    ef@(fmts,error) = (set_fmts_filt pPC_fmts pPC_minw)
+UU_Pretty.hs@604@  type T_PPSArgs =  T_Reqs ->(T_Errs,T_Fmts,T_Mins,Int)
+UU_Pretty.hs@610@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (head lhs_reqs)
+UU_Pretty.hs@611@     ;    ( pPSArgs_error, pPSArgs_fmts, pPSArgs_mins, pPSArgs_len )  = pPSArgs (tail lhs_reqs)
+UU_Pretty.hs@615@  type T_PPCArgs =  T_Errs -> T_Fmts -> T_Reqs -> T_Mins ->(T_Errs,T_Fmts,T_Reqs,T_Mins,Int,Int)
+UU_Pretty.hs@621@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )  = pPC (pef) (pff) (head lhs_ireqs) (pim)
+UU_Pretty.hs@623@           = pPCArgs (lef) (lff) (tail lhs_ireqs) (lim)
+UU_Pretty.hs@624@     ;    i@(pim,lim) = (splitAt pPC_numpars lhs_ifillmins)
+UU_Pretty.hs@625@     ;    e@(pef,lef) = (splitAt pPC_numpars lhs_ifillerrs)
+UU_Pretty.hs@626@     ;    m@(pff,lff) = (splitAt pPC_numpars lhs_ifillfmts)
+UU_Pretty.hs@636@  type T_FillList =  Formats -> T_Error -> T_PH -> T_PW -> T_PLL -> T_Frame -> T_PW ->(Formats,T_Error,T_PH,T_PW,T_PLL)
+UU_Pretty.hs@640@   =  ( lhs_fmts, lhs_error, lhs_maxh, lhs_minw, lhs_minll )
+UU_Pretty.hs@643@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (lhs_frame)
+UU_Pretty.hs@645@           = fillList (ffmts)
+UU_Pretty.hs@652@     ;    avail = (lhs_pw - newll >= 0)
+UU_Pretty.hs@653@     ;    newll = (lhs_minll + pPS_minw)
+UU_Pretty.hs@654@     ;    fe@(ffmts,ferror) = (set_fmts_filllist lhs_fmts pPS_fmts lhs_maxh pPS_maxh lhs_frame avail)
+UU_Pretty.hs@658@  type T_Root =  T_PW ->String
+UU_Pretty.hs@662@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (F lhs_pw lhs_pw)
+UU_Pretty.hs@666@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (F lhs_pw lhs_pw)
+UU_Pretty.hs@670@  type T_Disp =  T_PW ->ShowS
+UU_Pretty.hs@674@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (F lhs_pw lhs_pw)
+UU_Pretty.hs@678@  type T_LiftS =  T_Function -> T_Frame ->(T_Formats,T_Error,T_PH,T_PLL,T_PW)
+UU_Pretty.hs@682@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS lhs_frame
+UU_Pretty.hs@687@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@688@           = pPC lhs_fillerrs lhs_fillfmts lhs_frame lhs_fillmins
+UU_Pretty.hs@691@   = let{ ( pPC_fmts, pPC_error, pPC_maxh, pPC_reqs, pPC_minll, pPC_minw, pPC_numpars )
+UU_Pretty.hs@692@           = pPC lhs_fillerrs lhs_fillfmts lhs_frame lhs_fillmins
+UU_Pretty.hs@693@     ;    fe@(fmts,error) = (lhs_f pPC_fmts)
+UU_Pretty.hs@697@  type T_CenterList =  Int -> T_SynPPS -> T_Frame ->(Int,T_SynPPS)
+UU_Pretty.hs@700@  sem_CenterList_Nil lhs_maxw lhs_fmts lhs_frame =  ( (0), lhs_fmts )
+UU_Pretty.hs@703@   = let{ ( pPS_fmts, pPS_error, pPS_maxh, pPS_minll, pPS_minw )  = pPS (lhs_frame)
+UU_Pretty.hs@704@     ;    ( centerList_maxw, centerList_fmts )  = centerList lhs_maxw (vapp lhs_fmts spaces pPS lhs_frame) lhs_frame
+UU_Pretty.hs@705@     ;    spaces = ((lhs_maxw - pPS_minw) `div` 2)

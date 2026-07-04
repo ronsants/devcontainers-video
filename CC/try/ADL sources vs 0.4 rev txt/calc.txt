@@ -1,0 +1,108 @@
+
+calc.hs@11@  nrmFi (F [Tc f c]) = nrmFi f
+calc.hs@12@  nrmFi (F [t]     ) = Fi [Fu [F [t]]]
+calc.hs@16@                         Fi es  = nrmFi (F [t])
+calc.hs@17@                         Fi es' = nrmFi (F ts)
+calc.hs@18@  nrmFi (Fu [f]    ) = nrmFi f
+calc.hs@19@  nrmFi (Fu (f:fs) ) = Fi [ Fu (is++is')
+calc.hs@22@                         Fi es  = nrmFi f
+calc.hs@23@                         Fi es' = nrmFi (Fu fs)
+calc.hs@24@  nrmFi (Fi [f]    ) = nrmFi f
+calc.hs@25@  nrmFi (Fi (f:fs) ) = Fi (map nrmFu (es++es'))
+calc.hs@27@                         Fi es  = nrmFi f
+calc.hs@28@                         Fi es' = nrmFi (Fi fs)
+calc.hs@30@  nrmFu (Fu [f]    ) = nrmFu f
+calc.hs@31@  nrmFu (Fu (f:fs) ) = Fu (es++es')
+calc.hs@33@                          Fu es  = nrmFu f
+calc.hs@34@                          Fu es' = nrmFu (Fu fs)
+calc.hs@35@  nrmFu (F  [t]    ) = Fu [F [t]]
+calc.hs@38@                          Fu is  = nrmFu (F [t])
+calc.hs@39@                          Fu is' = nrmFu (F ts)
+calc.hs@43@However, in all cases (normFu f) follows logically from f (that is: f = normFu f)
+calc.hs@45@  normFu (F [Tc f c]) = normFu f
+calc.hs@46@  normFu (F [t]     ) = Fu [Fi [F [t]]]
+calc.hs@50@                           Fu es  = normFu (F [t])
+calc.hs@51@                           Fu es' = normFu (F ts)
+calc.hs@52@  normFu (Fi [f]    ) = normFu f
+calc.hs@53@  normFu (Fi (f:fs) ) = Fu [ Fi (is++is')
+calc.hs@56@                          Fu es  = normFu f
+calc.hs@57@                          Fu es' = normFu (Fi fs)
+calc.hs@58@  normFu (Fu [f]    ) = normFu f
+calc.hs@59@  normFu (Fu (f:fs) ) = Fu (map normFi (es++es'))
+calc.hs@61@                          Fu es  = normFu f
+calc.hs@62@                          Fu es' = normFu (Fu fs)
+calc.hs@63@  normFu x = error ("Fatal: normFu ("++showHS x++")\n"++showADL x)
+calc.hs@65@  normFi (Fi [f]    ) = normFi f
+calc.hs@66@  normFi (Fi (f:fs) ) = Fi (es++es')
+calc.hs@68@                          Fi es  = normFi f
+calc.hs@69@                          Fi es' = normFi (Fi fs)
+calc.hs@70@  normFi (F  [t]    ) = Fi [F [t]]
+calc.hs@73@                          Fi is  = normFi (F [t])
+calc.hs@74@                          Fi is' = normFi (F ts)
+calc.hs@76@  normR (Ru c antc pos cons expla sgn nr) = Ru c (normFu antc) pos (normFu cons) expla sgn nr
+calc.hs@77@  normR (Gc pos m expr sgn nr)            = Gc pos m (normFu expr) sgn nr
+calc.hs@81@r = p;(s \/ t);q   -  { r -: p;s;q\/p;t;q }
+calc.hs@83@r = p \/ q         -  { p -: r, q -: r, r -: p\/q }
+calc.hs@84@r = s              -  { r -: s, s -: r }
+calc.hs@95@    idC = if length (eqClass order [source c,target c,idA])>1 then error ("Fatal: shiftLeft ("++showHS r++")\n"++showADL r++"\nin calculation of idC\n"++show (eqClass order [source c,target c,idA])) else
+calc.hs@97@    idA = if length (eqClass order (target a:map source ants))>1 then error ("Fatal: shiftLeft ("++showHS r++")\n"++showADL r++"\nin calculation of idA\n"++show (eqClass order (target a:map source ants))) else
+calc.hs@99@    signs (as,cs) = [( -- if null cs then source (head as) else
+calc.hs@102@                       else error ("Fatal: shiftLeft ("++showHS r++")\n"++showADL r++"\nin calculation of source (head cs) `lub` source (head as) with cs="++show (map showS cs)++" and as="++show (map showS as)++"\n")
+calc.hs@106@                       else error ("Fatal: shiftLeft ("++showHS r++")\n"++showADL r++"\nin calculation of target (head cs) `lub` target (head as) with cs="++show (map showS cs)++" and as="++show (map showS as)++"\n")
+calc.hs@111@       where h=head as; l=last as
+calc.hs@112@    move as [c] = [(as,[c])]
+calc.hs@116@       where h=head cs; l=last cs
+calc.hs@117@  shiftLeft r = [r]
+calc.hs@123@    idC = if length (eqClass order [source c,target c,idA])>1 then error ("Fatal: shiftRight ("++showHS r++")\n"++showADL r++"\nin calculation of idC\n"++show (eqClass order [source c,target c,idA])) else
+calc.hs@125@    idA = if length (eqClass order (target a:map source ants))>1 then error ("Fatal: shiftRight ("++showHS r++")\n"++showADL r++"\nin calculation of idA\n"++show (eqClass order (target a:map source ants))) else
+calc.hs@127@    signs (as,cs) = [( -- if null as then source (head cs) else
+calc.hs@130@                       else error ("Fatal: shiftRight ("++showHS r++")\n"++showADL r++"\nin calculation of source (head cs) `lub` source (head as) with cs="++show (map showS cs)++" and as="++show (map showS as)++"\n")
+calc.hs@134@                       else error ("Fatal: shiftRight ("++showHS r++")\n"++showADL r++"\nin calculation of target (head cs) `lub` target (head as) with cs="++show (map showS cs)++" and as="++show (map showS as)++"\n")
+calc.hs@139@       where h=head cs; l=last cs
+calc.hs@140@    move [a] cs = [([a],cs)]
+calc.hs@144@       where h=head as; l=last as
+calc.hs@145@  shiftRight r = [r]
+calc.hs@147@  shrink (Fu [f]) = shrink f
+calc.hs@148@  shrink (Fi [f]) = shrink f
+calc.hs@149@  shrink f        = f
+calc.hs@155@  data DBrule = DBR Char Rule Morphism [Int] deriving Show
+calc.hs@157@   DBR c r m _ == DBR c' r' m' _ = c==c' && r==r' && m==m'
+calc.hs@159@  frMorph (DBR _ r m _) = m
+calc.hs@160@  toMorph (DBR _ (Ru _ antc _ (F [Tm m _]) _ _ _) _ _) = m
+calc.hs@163@   where cls = [ DBR 'I' r m [nr]
+calc.hs@168@   where cls = [ DBR 'D' r m [nr]
+calc.hs@174@     source r==source t && target s==target t
+calc.hs@176@  dbNrs str nrs = ["    ",str," (by rule"++
+calc.hs@183@   = (if null dbs then "" else
+calc.hs@192@           (DBR _ _ m _):rest = dbrs
+calc.hs@195@   = dbNrs ("INSERT ("++showADL expr'++") IN "++showADL m) nrs
+calc.hs@197@           expr' = subst (m',F [Tm ins True]) antc
+calc.hs@198@           ins   = Mph ("{("++s++","++t++")}") pos atts sgn signr
+calc.hs@200@   = dbNrs ("INSERT ("++showADL expr'++") IN "++showADL m) nrs
+calc.hs@202@           expr' = subst (m',F [Tm ins True]) antc
+calc.hs@203@           ins   = Mph ("{("++s++","++t++")}") pos atts sgn signr
+calc.hs@207@   = dbNrs ("DELETE ("++showADL expr'++") IN "++showADL m) nrs
+calc.hs@209@           expr' = subst (m',F [Tm del True]) cons
+calc.hs@210@           del   = Mph ("{("++s++","++t++")}") pos atts sgn signr
+calc.hs@212@   = dbNrs ("DELETE ("++showADL expr'++") IN "++showADL m) nrs
+calc.hs@214@           expr' = subst (m',F [Tm del True]) cons
+calc.hs@215@           del   = flp (Mph ("{("++t++","++s++")}") pos atts sgn signr)
+calc.hs@216@  dbShw r = error ("Fatal: non-exhaustive pattern in dbShw("++show r++")")
+calc.hs@220@   = (concat.map shiftTerms)
+calc.hs@226@   = (concat.map shiftTerms)
+calc.hs@228@  calcul shiftTerms x = [x]
+calc.hs@230@     con 'A' (Ru c antc pos (F [t]) expla sgn nr) = t
+calc.hs@231@     con 'C' (Ru c (F [t]) pos cons expla sgn nr) = t
+calc.hs@232@     con _ r = error ("Fatal: con applied to "++showADL r++"\nSpecifically: "++showHS r)
+calc.hs@233@     uni _ [r] = r
+calc.hs@236@      where Ru c antc pos cons expla sgn nr = head rs
+calc.hs@239@      where Ru c antc pos cons expla sgn nr = head rs
+calc.hs@248@ --   = do { a <- getArgs
+calc.hs@249@ --        ; let (switches,args) = splitStr ((=="-").take 1) a
+calc.hs@251@ --        ; if length args==0 then putStr ("Please provide a filename (.adl) and a context name") else
+calc.hs@252@ --     do { let fn = args!!0; contextname = args!!1
+calc.hs@253@ --              (fnPrefix,fnSuffix) = break ('.' ==) fn
+calc.hs@254@ --              fnFull = if null fnSuffix then (fn ++ ".adl") else fn
+calc.hs@259@ --        ; let (contexts,errs) = sem_Architecture slRes
+calc.hs@262@ --  fakeLub a b = a
+calc.hs@263@ --  shR r = showADL r++"\n  "++chain "\n  " (map showADL (insertRules [r]++deleteRules [r])) -- ++"\n  "++showHS r++"\n  "++showHS (normR r)

@@ -1,0 +1,27 @@
+
+Auxiliaries.hs	6	  mor2name :: Identified a => a -> String
+Auxiliaries.hs	7	  mor2name       = dePoint.mumble.name
+Auxiliaries.hs	11	  dePoint str = if head str=='.' then tail str else
+Auxiliaries.hs	12	                if last str=='.' then init str else str
+Auxiliaries.hs	13	  strip = filter isAlphaNum
+Auxiliaries.hs	14	  conceptForm (c:cs) = strip (toUpper c: map toLower cs)
+Auxiliaries.hs	15	  conceptForm "" = ""
+Auxiliaries.hs	20	   eleM     :: Eq b => b -> a b -> Bool
+Auxiliaries.hs	21	   uni, isc :: Eq b => a b -> a b -> a b
+Auxiliaries.hs	22	   (>-)     :: Eq b => a b -> a b -> a b
+Auxiliaries.hs	23	   empty    :: Eq b => a b
+Auxiliaries.hs	24	   elems    :: Eq b => a b -> [b]
+Auxiliaries.hs	27	   eleM        = any . (==)
+Auxiliaries.hs	32	   elems       = id
+Auxiliaries.hs	37	  commaAnd [a,b,c]= a++", "++b++", and "++c
+Auxiliaries.hs	38	  commaAnd [a,b]  = a++" and "++b
+Auxiliaries.hs	39	  commaAnd [a]    = a
+Auxiliaries.hs	40	  commaAnd (a:as) = a++", "++commaAnd as
+Auxiliaries.hs	43	  commaEn [a,b,c]= a++", "++b++" en "++c
+Auxiliaries.hs	44	  commaEn [a,b]  = a++" en "++b
+Auxiliaries.hs	45	  commaEn [a]    = a
+Auxiliaries.hs	46	  commaEn (a:as) = a++", "++commaEn as
+Auxiliaries.hs	50	  enumerate [x]= x
+Auxiliaries.hs	70	  fst3 (a,b,c) = a
+Auxiliaries.hs	71	  snd3 (a,b,c) = b
+Auxiliaries.hs	72	  thd3 (a,b,c) = c

@@ -1,0 +1,261 @@
+
+ccgen.hs@19@  testing = False
+ccgen.hs@20@  textgraphs = False
+ccgen.hs@21@  latexOpt sws = "-l" `elem` sws
+ccgen.hs@29@   = do { a <- getArgs
+ccgen.hs@30@        ; let (switches,args) = splitStr ((=="-").take 1) a
+ccgen.hs@32@        ; if length args==0 then putStr ("Please provide a filename (.adl) and a context name") else
+ccgen.hs@33@     do { let fn = args!!0; contextname = args!!1
+ccgen.hs@34@              (fnPrefix,fnSuffix) = break ('.' ==) fn
+ccgen.hs@35@              fnFull = if null fnSuffix then (fn ++ ".adl") else fn
+ccgen.hs@40@        ; let (contexts,errs) = sem_Architecture slRes
+ccgen.hs@49@                if length args==1 && length contexts==1
+ccgen.hs@51@                if length args==1 && length contexts>1
+ccgen.hs@66@             = sequence_ 
+ccgen.hs@75@   = putStr ("\nGenerating Glossary for "++name context++" in the current directory.") >>
+ccgen.hs@81@       Typ pths = typology (isa context)
+ccgen.hs@84@   = putStr ("\nCalculation rules for "++name context++"\n"++
+ccgen.hs@89@      shR r = showADL r++"\n  "++chain "\n  " (map showADL (insertRules [r]++deleteRules [r]))
+ccgen.hs@92@   = putStr ("\nGenerating Zed specification for "++name context++" in the current directory.") >>
+ccgen.hs@99@   = putStr ("\nGenerating Atlas for "++name context++" in the current directory."++
+ccgen.hs@123@      cTrees   = makeTrees (Typ (map reverse pths))
+ccgen.hs@124@      Typ pths = typology (isa context)
+ccgen.hs@125@      gE    = genE context
+ccgen.hs@126@      world = wrld context
+ccgen.hs@128@       = htmlPage ("Code for "++name context++" navigator")
+ccgen.hs@134@            = ("<A HREF=\"JavaScript: trigger('"++name context++".html"++
+ccgen.hs@135@              "');\" TITLE="++show (name context)++
+ccgen.hs@136@              "><IMG SRC=\"treemenutils/menu_new_root.gif\" ALIGN=\"left\" BORDER=\"0\" VSPACE=\"0\" HSPACE=\"0\" /></A>") :
+ccgen.hs@141@       = putStr ("\n\nAnalyzing context "++name context)                                               >>
+ccgen.hs@195@           epsi = "-Gepsilon=3"
+ccgen.hs@197@            = (makeTrees . Typ)
+ccgen.hs@202@            = batGraph thisVpt vptPat                                                >>
+ccgen.hs@206@              where fnm     = thisCtx++htmlNm e++htmlNm r
+ccgen.hs@207@                    h       = htmlViewpoint context thisVpt vptPat e c predLogic
+ccgen.hs@208@                    vptPat  = inhViewpoint (Cl context (wrld context)) e r
+ccgen.hs@209@                    thisVpt = thisCtx++htmlNm e++htmlNm r
+ccgen.hs@210@           thisCtx = htmlNm context
+ccgen.hs@213@            = htmlPage ("Code for "++name context++" concepts navigator")
+ccgen.hs@214@                       ("<SCRIPT type=\"text/javascript\">\nfunction SwitchPat(value)\n { parent.concepts.document.location.href=value+'.html'\n ; parent.menu.document.location.href='NAV_'+value+'.html'\n }\n"++(if null ms then "" else "function SwitchPop(value)\n { parent.concepts.document.location.href=value+'.html' }\n")++"</SCRIPT>")
+ccgen.hs@219@                             ["onChange=\"SwitchPat(this.value)\""]
+ccgen.hs@220@                             ( ("value="++show(htmlNm context), "All patterns"):
+ccgen.hs@221@                               [("value="++show(htmlNm context++"_"++htmlNm pat), name pat)
+ccgen.hs@226@                           htmlDropDown "Select Relation" ["onChange=\"SwitchPop(this.value)\""] (("value=\""++htmlname (name context)++"\"","---"):ms)++
+ccgen.hs@230@                            ["onChange=\"SwitchPat(this.value)\""]
+ccgen.hs@231@                            ( ("value="++show(htmlNm context), "---")
+ccgen.hs@232@                              : [("value="++show(htmlNm context++htmlNm c), name c)
+ccgen.hs@235@                           "\n<P>"++htmlAnchor ("ANAL"++htmlname (name context))  "Analysis" ["TARGET=concepts"]++"\n"
+ccgen.hs@238@              where ms = [( "value="++show("REL_"++htmlname (name context++"_"++name m++name (source m)++name (target m)))
+ccgen.hs@242@                    thisCtx = htmlNm context
+ccgen.hs@244@            = htmlPage ("Code for "++name context++" concepts navigator")
+ccgen.hs@245@                       ("<SCRIPT type=\"text/javascript\">\nfunction SwitchPat(value)\n { parent.concepts.document.location.href='"++thisCtx++"'+value+'.html'\n ; parent.menu.document.location.href='NAV_"++thisCtx++"'+value+'.html'\n }\nfunction SwitchView(value)\n { parent.concepts.document.location.href='"++thisCtx++"'+value+'.html' }\n"++(if null ms then "" else "function SwitchPop(value)\n { parent.concepts.document.location.href=value+'.html' }\n")++"</SCRIPT>")
+ccgen.hs@250@                             ["onChange=\"SwitchPat(this.value)\""]
+ccgen.hs@251@                             ( ("value="++show(""), "All patterns"):
+ccgen.hs@252@                               [("value="++show("_"++htmlNm pat), name pat)
+ccgen.hs@257@                           htmlDropDown "Select Relation" ["onChange=\"SwitchPop(this.value)\""] (("value=\""++htmlname (name context)++"_"++thisPat++"\"","---"):ms)++
+ccgen.hs@261@                            ["onChange=\"SwitchView(this.value)\" onClick=\"SwitchView(this.value)\""]
+ccgen.hs@262@                            ( ("value="++show(""), "---")
+ccgen.hs@263@                              : [("value="++show (htmlNm c)++
+ccgen.hs@264@                                  if thisPat==htmlNm c then " selected" else "", name c)
+ccgen.hs@267@                           "\n<P>\n"++htmlAnchor ("ANAL"++htmlname (name context))  "Analysis" ["TARGET=concepts"]++"\n"
+ccgen.hs@270@              where ms = [( "value="++show("REL_"++htmlname (name context++"_"++name m++name (source m)++name (target m)))
+ccgen.hs@274@                    thisCtx = htmlNm context
+ccgen.hs@275@                    thisPat = htmlNm cPat
+ccgen.hs@278@            = htmlPage ("Code for "++name context++" concepts navigator")
+ccgen.hs@279@                       ("<SCRIPT type=\"text/javascript\">\nfunction SwitchPat(value)\n { parent.concepts.document.location.href='"++thisCtx++"'+value+'.html'\n ; parent.menu.document.location.href='NAV_"++thisCtx++"'+value+'.html'\n }\nfunction SwitchView(value)\n { parent.concepts.document.location.href='"++thisCtx++"'+value+'.html' }\n"++(if null ms then "" else "function SwitchPop(value)\n { parent.concepts.document.location.href=value+'.html' }\n")++"</SCRIPT>")
+ccgen.hs@284@                             ["onChange=\"SwitchPat(this.value)\""]
+ccgen.hs@285@                             ( ("value="++show(""), "All patterns"):
+ccgen.hs@286@                               [("value="++show("_"++htmlNm p)++
+ccgen.hs@287@                                  if thisPat==htmlNm p then " selected" else "",name p)
+ccgen.hs@292@                           htmlDropDown "Select Relation" ["onChange=\"SwitchPop(this.value)\""] (("value=\""++htmlname (name context)++"_"++thisPat++"\"","---"):ms)++
+ccgen.hs@296@                            ["onChange=\"SwitchView(this.value)\" onClick=\"SwitchView(this.value)\""]
+ccgen.hs@297@                            ( ("value="++show("_"++thisPat),"---")
+ccgen.hs@298@                              : [("value="++show(htmlNm c),name c)
+ccgen.hs@301@                           "\n<P>\n"++htmlAnchor ("ANAL"++htmlname (name context))  "Analysis" ["TARGET=concepts"]++"\n"
+ccgen.hs@304@              where ms = [( "value="++show("REL_"++htmlname (name context++"_"++name m++name (source m)++name (target m)))
+ccgen.hs@308@                    thisCtx = htmlNm context
+ccgen.hs@309@                    thisPat = htmlNm cPat
+ccgen.hs@312@            = htmlPage ("Code for "++name context++" concepts navigator")
+ccgen.hs@313@                       ("<SCRIPT type=\"text/javascript\">\nfunction SwitchPat(value)\n { parent.concepts.document.location.href=value+'.html'\n ; parent.menu.document.location.href='NAV_'+value+'.html'\n }\nfunction SwitchView(value)\n { parent.concepts.document.location.href=value+'.html' }\n"++(if null ms then "" else "function SwitchPop(value)\n { parent.concepts.document.location.href=value+'.html'}\n")++"</SCRIPT>")
+ccgen.hs@318@                             ["onChange=\"SwitchPat(this.value)\""]
+ccgen.hs@319@                             ( ("value="++show(htmlNm context), "All patterns"):
+ccgen.hs@320@                               [("value="++show(htmlNm context++"_"++htmlNm p)++
+ccgen.hs@321@                                  if name cPat==name p then " selected" else "",name p)
+ccgen.hs@326@                           htmlDropDown "Select Relation" ["onChange=\"SwitchPop(this.value)\""] ms++
+ccgen.hs@330@                            ["onChange=\"SwitchPat(this.value)\" onClick=\"SwitchView(this.value)\""]
+ccgen.hs@331@                            [("value="++show(htmlNm context++"_"++htmlNm cPat++htmlNm c')++
+ccgen.hs@332@                              if name c==name c' then " selected" else "",name c')
+ccgen.hs@335@                          "\n<P>\n"++htmlAnchor ("ANAL"++htmlname (name context))  "Analysis" ["TARGET=concepts"]++"\n"
+ccgen.hs@337@              where ms = [( "value="++show("REL_"++htmlname (name context++"_"++name m++name (source m)++name (target m)))
+ccgen.hs@342@   = sequence_ (map (genRel context) (signatures context))>>
+ccgen.hs@352@     violations = (concat . map hv . rules) context++if null viol then "" else "\n<P>\n"++viol
+ccgen.hs@354@     tabulate (Fu fs) = (rd.concat.map tabulate) fs
+ccgen.hs@355@     tabulate (Fi fs) = (foldr1 isc.map tabulate) fs
+ccgen.hs@357@     tabulate (F [Tc f _ _]   ) = tabulate f
+ccgen.hs@362@     hv r = if null ruleviol then "" else
+ccgen.hs@367@            where ruleviol = htmlViolations r
+ccgen.hs@368@     viol = chain "\n\n"
+ccgen.hs@382@     sentence s a b Uni = if a==b
+ccgen.hs@385@     sentence s a b Tot = "there is a missing "++b++" for each of the following "++plural a++". (This relation is total)"
+ccgen.hs@386@     sentence s a b Sur = "there is a missing "++a++" for each of the following "++plural b++". (This relation is surjective)"
+ccgen.hs@387@     sentence s a b Inj = if a==b
+ccgen.hs@401@       where a  = name (source s)
+ccgen.hs@402@             b  = name (target s)
+ccgen.hs@403@             cs = contents s
+ccgen.hs@406@              = "A tuple <I>x</I>,<I>y</> in the following table means:<BR />"++l++"&lt;x&gt;"++s++"&lt;y&gt;"++r++".<P>"
+ccgen.hs@408@              = "A tuple, for example <I>("++head c++","++last c++")</I> in the following table means:<BR />"++l++head c++s++last c++r++".<P>"
+ccgen.hs@409@             tabl = "\nThe following table displays the contents of this relation."++
+ccgen.hs@411@             viol = chain "\n\n"
+ccgen.hs@418@             sent Uni = "because each "++a++" in the left hand column may not have more than one "++b++" on the right. (The relation "++htmlItalic (name s)++" is univalent.)"
+ccgen.hs@419@             sent Tot = "because there is a missing "++b++" for each of the following "++plural a++". (The relation "++htmlItalic (name s)++" is total.)"
+ccgen.hs@420@             sent Sur = "because there is a missing "++a++" for each of the following "++plural b++". (The relation "++htmlItalic (name s)++" is surjective.)"
+ccgen.hs@421@             sent Inj = "because each "++b++" in the right hand column may not have more than one "++a++" to its left. (The relation "++htmlItalic (name s)++" is injective.)"
+ccgen.hs@422@  noun Uni  = "Univalence"
+ccgen.hs@423@  noun Tot  = "Totality"
+ccgen.hs@424@  noun Sur  = "Surjectivity"
+ccgen.hs@425@  noun Inj  = "Injectivity"
+ccgen.hs@429@        "\n<PATS>"++concat [ "\n <PAT NAME=\""++name pat++"\" GRPH=\""++htmlname (nm++"_"++name pat)++".xml\">"++
+ccgen.hs@435@        = "\n <CTX NAME=\"" ++ nm ++ "\">" ++
+ccgen.hs@439@          concat [ "\n  <REL ID=\""++htmlname (nm++"_"++nm'++name a++name b)++"\" NAME=\""++name m++"\" HREF=\"REL_"++htmlname (nm++"_"++nm'++name a++name b)++".html\" />"
+ccgen.hs@444@        = ind++"<"++str++" NAME=\""++name r++"\""++if null (shw ind r)
+ccgen.hs@447@          where ind = indent++" "
+ccgen.hs@449@        = ind++"<"++str++" NAME=\""++name r++"\">"++shw ind r++
+ccgen.hs@452@          where ind = indent++" "
+ccgen.hs@453@       cShw indent (C _ _ _) = ""
+ccgen.hs@455@  loadcode = "<BODY onload=\"MTMStartMenu()\" bgcolor=#FFFFBB link=#AA0000 alink=#AA0000 hlink=#AA0000></BODY>"
+ccgen.hs@457@      = "Use the classification of concepts (on your left) to browse."
+ccgen.hs@459@      = "<SCRIPT type=\"text/javascript\">\n"++
+ccgen.hs@461@        "    for(i = 0; i < parent.frames.length; i++) {\n"++
+ccgen.hs@462@        "      if(parent.frames[i].name == \"code\" && parent.frames[i].MTMLoaded) {\n"++
+ccgen.hs@463@        "        parent.frames[i].MTMTrack = true;\n"++
+ccgen.hs@471@      = chain "\n"
+ccgen.hs@474@        , "<SCRIPT TYPE=\"text/javascript\">"
+ccgen.hs@475@        , "var MTMUsableBrowser = false;"
+ccgen.hs@477@        , "browserName = navigator.appName;"
+ccgen.hs@478@        , "browserVersion = parseInt(navigator.appVersion);"
+ccgen.hs@479@        , "if(browserName == \"Netscape\" && browserVersion >= 3) {"
+ccgen.hs@480@        , "  MTMUsableBrowser = (navigator.userAgent.indexOf(\"Opera\") == -1) ? true : false;"
+ccgen.hs@481@        , "} else if(browserName == \"Microsoft Internet Explorer\" && browserVersion >= 4) {"
+ccgen.hs@482@        , "  MTMUsableBrowser = true;"
+ccgen.hs@485@        , "document.write('<FRAMESET Cols=\"1,210,*\" border=0 frameborder=\"no\" framespacing=\"0\">');"
+ccgen.hs@486@        , "document.write('  <FRAME Name=\"code\" SRC=\"CTX_"++filename++"\" NORESIZE FRAMEBORDER=\"No\">');"
+ccgen.hs@487@        , "document.write('  <FRAMESET Rows=\"150,*\" border=0 frameborder=\"no\" framespacing=\"0\">');"
+ccgen.hs@488@        , "document.write('    <FRAME Name=\"context\" SRC=\"treemenutils/conceptsmenu_empty.html\" NORESIZE FRAMEBORDER=\"No\">');"
+ccgen.hs@489@        , "document.write('    <FRAME Name=\"menu\" SRC=\"NAV_"++filename++"\" NORESIZE FRAMEBORDER=\"No\">');"
+ccgen.hs@491@        , "document.write('  <FRAME Name=\"concepts\" SRC=\"Concept.html\" NORESIZE FRAMEBORDER=\"No\">');"
+ccgen.hs@501@   = htmlPage ("Code for Rule "++show (nr r)) ""
+ccgen.hs@502@                   (htmlBody ("<A HREF=#REF2Glossary>Glossary</A> <A HREF=#REF2Relations>Relations</A>\n"++
+ccgen.hs@503@                              (if length (rules context) <=1 then "" else
+ccgen.hs@504@                               "<A HREF=\""++htmlNm context++"_Rule_"++show (if nr r==length (rules context) then 1 else nr r+1)++".html\">Next rule</A>\n"++
+ccgen.hs@505@                               "<A HREF=\""++htmlNm context++"_Rule_"++show (if nr r==1 then length (rules context) else nr r-1)++".html\">Previous rule</A>\n")++
+ccgen.hs@518@                                then (if length consStrands ==1
+ccgen.hs@525@                                else (if length antcStrands ==1
+ccgen.hs@545@   where ruleviol    = htmlViolations r
+ccgen.hs@546@         [x,y]       = head (violations r)
+ccgen.hs@547@         irs         = insertRules [r]
+ccgen.hs@548@         drs         = deleteRules [r]
+ccgen.hs@549@         antcStrands = strands (C a gE [x],C b gE [y]) antc
+ccgen.hs@550@         consStrands = strands (C a gE [x],C b gE [y]) cons
+ccgen.hs@551@         antcNostrds = nostrds (C a gE [x],C b gE [y]) antc
+ccgen.hs@552@         consNostrds = nostrds (C a gE [x],C b gE [y]) cons
+ccgen.hs@554@         gE          = genE r
+ccgen.hs@555@         Ru c antc pos cons expla (C a _ _,C b _ _) n = r
+ccgen.hs@558@   = if null vs then "" else -- No violations detected within this rule.\n
+ccgen.hs@560@     where vs = violations r
+ccgen.hs@571@       = [ if null (contents s) then name s else
+ccgen.hs@581@                else htmlAnchor (show("REL_"++htmlname (name context++"_"++name s++name (source s)++name (target s))++".html#REF2"++show len++" violation"++(if len==1 then "" else "s")++" of "++noun p))
+ccgen.hs@587@      homogeneous s = source s == target s
+ccgen.hs@596@   = htmlPage ("Code for "++nm) ""
+ccgen.hs@602@   = htmlPage ("Code for "++name context) ("<SCRIPT type=\"text/javascript\">\nparent.menu.document.location.href='NAV_"++fnm++".html'\n</SCRIPT>")
+ccgen.hs@605@     where Pat nm rs parChds pms cs = foldr1 union (patterns context)
+ccgen.hs@619@   = Pat (name c)
+ccgen.hs@625@           concsV = concs rulesV
+ccgen.hs@629@   = Pat ("Concept "++name specific++" inherited from "++name gen)
+ccgen.hs@646@   = (htmlPage (name c) "" . htmlBody)
+ccgen.hs@651@      (if c==r then "" else " emerging from properties of "++name r)                                ++
+ccgen.hs@657@      (if null atoms then "" else if length atoms==1
+ccgen.hs@661@      "\n<FONT color=\"#AA0000\"><HR color=#AA0000></FONT>\n"++tests                               ++
+ccgen.hs@672@       rs = rules pat++rules (specs pat)
+ccgen.hs@673@       irs = insertRules rs
+ccgen.hs@674@       drs = deleteRules rs
+ccgen.hs@675@       C nm gE atoms = c
+ccgen.hs@676@       thisCtx = htmlNm context
+ccgen.hs@677@       gen = name r
+ccgen.hs@680@        = if testing
+ccgen.hs@682@               "<BR />cs = "++show (concs pat)++
+ccgen.hs@683@               "<BR />rs = "++show (rules pat)
+ccgen.hs@688@   = (nr r, ruleviol (nr r)++(if predLogic then (hshow.assemble.normRule lub) r++"\n<BR />\n" else "")++explainverder thisCtx r++"\n")
+ccgen.hs@700@      = (vptTitle c'++"Properties of "++name c'++" emerging from properties of "++name c++
+ccgen.hs@701@         ".\n<FONT color=\"#AA0000\"><HR color=#AA0000></FONT>\n"++tests++
+ccgen.hs@707@      = (vptTitle c++"Properties of concept "++name c++" in context "++name context++
+ccgen.hs@711@         "\n<FONT color=\"#AA0000\"><HR color=#AA0000></FONT>\n"++tests++
+ccgen.hs@716@                  if testing then "\n<BR />\nconcS = "++show (map name concS)++"\n<BR />\nconcG = "++show (map name concG) else ""
+ccgen.hs@719@       c'    = if null trace then c else head trace
+ccgen.hs@720@       concS = concs context
+ccgen.hs@722@       concG = concs world
+ccgen.hs@726@       trs = if null trc then "concept "++name c else
+ccgen.hs@732@       vptTitle c = "Concept: "++(name c)++"\n<P>\n"
+ccgen.hs@738@        = if testing
+ccgen.hs@739@          then "Testing:<BR />concS = "++show concS++
+ccgen.hs@740@               "<BR />concG = "++show concG++
+ccgen.hs@741@               "<BR />ruleS = "++show ruleS++
+ccgen.hs@742@               "<BR />ruleG = "++show ruleG++
+ccgen.hs@743@               "<BR />rules world = "++show (rules world)++
+ccgen.hs@744@               "<BR />specs context = "++show (specs context)
+ccgen.hs@747@test:  recalc context@(Ctx nm on isa world dc ms cs) = Ctx (error (testC++"\n\n"++testD)) on isa world dc ms cs
+ccgen.hs@750@  recalc context = -- Testing: if error (chain "\n------------\n" [testA, testB, testC, testD]) then context else
+ccgen.hs@758@    testA = chain "\n\n" (map showADL calcrules)
+ccgen.hs@760@    rs  = [ ((s,r),(s',r))
+ccgen.hs@765@    cls  = map sweep (makeClassificationsF fst rs)
+ccgen.hs@766@    testC = chain "\n\n" (map (show.mapCl f) cls)
+ccgen.hs@767@            where f (s,r) = name s ++ "  -->  " ++ showADL r
+ccgen.hs@768@    calcOrder = rs'++(calcrules>-rs') where rs' = (reverse . map snd . concat . map preCl) cls
+ccgen.hs@769@    testD = chain "\n\n" (map showADL calcOrder)
+ccgen.hs@771@    ss' = foldr subst (signatures context) calcOrder
+ccgen.hs@776@    subst r ss = error ("Unexpected compute error in :"++showADL r)
+ccgen.hs@779@  insert ls (Sgn nm a b props prL prM prR cs pos) = Sgn nm a b props prL prM prR (ls `uni` cs) pos
+ccgen.hs@780@  insert ls id                                    = id
+ccgen.hs@790@        where m e = e `elem` ps
+ccgen.hs@794@    = chain "\n" (["\n//menu menu\n\nvar menu = null;\nmenu = new MTMenu();"] ++
+ccgen.hs@799@        = ["\n//"++rootname++" menu\n\nvar "++varname++" = null;\n"++varname++" = new MTMenu();"] ++
+ccgen.hs@803@          where fnm r = htmlname (ctxname++name r++if null trace then "" else name (head trace))++".html"
+ccgen.hs@804@                varname = avoidJSreservedwords rootname
+ccgen.hs@806@        = rn++".MTMAddItem(new MTMenuItem(\""++htmlNm r++"\", \""++fnm++"\", \"concepts\"));"
+ccgen.hs@811@    = chain "\n" (["\n//menu menu\n\nvar menu = null;\nmenu = new MTMenu();"] ++
+ccgen.hs@816@        = ["\n//"++rootname++" menu\n\nvar "++varname++" = null;\n"++varname++" = new MTMenu();"] ++
+ccgen.hs@820@          where varname = avoidJSreservedwords rootname
+ccgen.hs@822@        = rn++".MTMAddItem(new MTMenuItem(\""++fnm++"\", \""++fnm++".html"++"\", \"concepts\"));"
+ccgen.hs@826@   = chain "\n"
+ccgen.hs@827@     ([ "<SCRIPT type=\"text/javascript\" src=\"treemenutils/mtmcode.js\"></SCRIPT>"
+ccgen.hs@828@      , "<SCRIPT type=\"text/javascript\">"
+ccgen.hs@836@      , "var MTMTableWidth = \"100%\";"
+ccgen.hs@837@      , "var MTMenuFrame = \"context\";"
+ccgen.hs@838@      , "var MTMSubsGetPlus = false;"
+ccgen.hs@839@      , "var MTMEmulateWE = true;"
+ccgen.hs@840@      , "var MTMenuImageDirectory = \"treemenutils/\";"
+ccgen.hs@841@      , "var MTMBGColor = \"#FFFFBB\";"
+ccgen.hs@842@      , "var MTMBackground = \"\";"
+ccgen.hs@843@      , "var MTMTextColor = \"#000000\";"
+ccgen.hs@844@      , "var MTMLinkColor = \"#AA0000\";"
+ccgen.hs@845@      , "var MTMAhoverColor = \"#000000\";"
+ccgen.hs@846@      , "var MTMTrackColor =\"#000000\";"
+ccgen.hs@847@      , "var MTMSubExpandColor = \"#666699\";"
+ccgen.hs@848@      , "var MTMSubClosedColor = \"#666699\";"
+ccgen.hs@849@      , "var MTMRootIcon = \"menu_new_root.gif\";"
+ccgen.hs@850@      , "var MTMenuText = \"Context tree\";"
+ccgen.hs@851@      , "var MTMRootColor = \"#000000\";"
+ccgen.hs@852@      , "var MTMRootFont = \"Arial, Helvetica, sans-serif\";"
+ccgen.hs@853@      , "var MTMRootCSSize = \"84%\";"
+ccgen.hs@854@      , "var MTMRootFontSize = \"-1\";"
+ccgen.hs@855@      , "var MTMenuFont = \"Arial, Helvetica, sans-serif\";"
+ccgen.hs@856@      , "var MTMenuCSSize = \"84%\";"
+ccgen.hs@857@      , "var MTMenuFontSize = \"-1\";"
+ccgen.hs@858@      , "var MTMLinkedSS = false;"
+ccgen.hs@859@      , "var MTMSSHREF = \"menu.css\";"
+ccgen.hs@860@      , "var MTMSubsAutoClose = false;"
+ccgen.hs@861@      , "var MTMTimeOut = 15;"
+ccgen.hs@862@      , "var MTMIconList = null;"
+ccgen.hs@863@      , "MTMIconList = new IconList();"
+ccgen.hs@870@   = if null vs then "" else
+ccgen.hs@873@  htmlNm :: Identified a => a->String
+ccgen.hs@874@  htmlNm = htmlname.name

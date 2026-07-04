@@ -1,0 +1,42 @@
+
+restrictions.hs	25	   = charVars "For all" vars ++ charshow restr
+restrictions.hs	27	   = charVars "Exists" vars  ++ charshow restr
+restrictions.hs	29	   = charshow antc++" ==> "  ++ charshow conseq
+restrictions.hs	31	   = charshow lhs++" <=> "   ++ charshow rhs
+restrictions.hs	33	   = if null rs then "" else
+restrictions.hs	36	   = if null rs then "" else
+restrictions.hs	38	  charshow (Not rs) = "not "++charshow rs
+restrictions.hs	40	   = charshow (Funs d left)++" "++name m++" "++charshow (Funs c right)
+restrictions.hs	43	   = charshow (Funs c left)++" "++name m++" "++charshow (Funs d right)
+restrictions.hs	46	   = charshow (Funs c left)++" temporary Quirk: ("++show f++") "++charshow (Funs d right)
+restrictions.hs	49	  charshow (Funs x (Id pos atts c:ms)) = charshow (Funs x ms)
+restrictions.hs	50	  charshow (Funs x (m:ms))             = charshow (Funs (name m++"("++x++")") ms)
+restrictions.hs	53	   = if null vs then "" else
+restrictions.hs	208	   = Forall [(s,sourc),(t,targ)]
+restrictions.hs	211	      (rc,cvars) = assembleF gE [s,t] expr
+restrictions.hs	213	      (me,exV) = pars0 gE [s,t] [Tm m (source m, target m)]
+restrictions.hs	218	      (ra,avars) = assembleF gE [s,t] antc
+restrictions.hs	219	      (rb,bvars) = assembleF gE [s] cons
+restrictions.hs	220	      (rc,cvars) = assembleF gE avars cons
+restrictions.hs	222	      transform (Forall vs (Implies (Exists es antc) cons)) = Forall (vs++es) (Implies antc cons)
+restrictions.hs	223	      transform expr = expr
+restrictions.hs	227	   = if null ics then ((\s->(\t->head (frels s t))), exclVars) else
+restrictions.hs	230	      res       = pars3 gE (exclVars++ivs) (split ts)
+restrictions.hs	232	      ics       = [lub gE v w
+restrictions.hs	234	      ivs       = mkVar exclVars ics
+restrictions.hs	250	      = (Rel r (head s) t, exV, source (head r), target (last t)): pars3 gE exV ts
+restrictions.hs	252	  pars3 gE exV ts = pars2 gE exV ts -- for lists shorter than 3
+restrictions.hs	262	  pars2 gE exV ts = pars1 gE exV ts -- for lists shorter than 2
+restrictions.hs	264	   = (restr, exV', source (head r), target (last r)): pars3 gE exV ts
+restrictions.hs	265	     where (restr,exV') = pars0 gE exV r
+restrictions.hs	272	                      where [Tc f (sF,tF)] = r
+restrictions.hs	280	  denote (Tm (Id _ _ _) _) = Rn
+restrictions.hs	286	  denote (Tf (Id _ _ _) _) = Rn
+restrictions.hs	287	  denote (Tc _ _)                   = Wrap
+restrictions.hs	288	  denotes = denote . head
+restrictions.hs	293	  split [t] = [[t]]
+restrictions.hs	295	   = if denote t `eq` Wrap      then (t:spl):spls else
+restrictions.hs	299	       spl:spls = split (t':ts)
+restrictions.hs	300	       Flr `eq` Flr = True
+restrictions.hs	301	       Frl `eq` Frl = True
+restrictions.hs	302	       x `eq` y     = False

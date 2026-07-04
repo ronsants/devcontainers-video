@@ -1,0 +1,7 @@
+
+parscsv.hs@8@  parseCSV = filter (not.null).map (map untok.splits ';').splits '\n'.tokens
+parscsv.hs@22@    splits c [Scsv str]    = [[Scsv str]]
+parscsv.hs@25@    splits c (Scsv str:ts) = [Scsv str]:splits c ts
+parscsv.hs@29@  untok [Scsv str] = str
+parscsv.hs@33@   = " ::"++x++"*"++y++"[UNI]\n  = [ "++chain "\n    ; " (map show (sord rs))++"\n    ].\n"
+parscsv.hs@40@   = do { a <- getArgs

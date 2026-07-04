@@ -1,0 +1,8 @@
+CONTEXT Basics
+PATTERN Set
+ elem; subsetEq -: elem
+  EXPLANATION "An element of a subset is also element of the entire set"
+ elem         :: Element * Set      []        PRAGMA "" " is an element of (Set) ".
+ subsetEq     :: Set     * Set      [TRN,ASY] PRAGMA "" " is a subset of ".
+ENDPATTERN
+ENDCONTEXT

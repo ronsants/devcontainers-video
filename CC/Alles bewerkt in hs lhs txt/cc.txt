@@ -1,0 +1,39 @@
+
+cc.hs	9	  keywordstxt      = [ "CONTEXT", "ENDCONTEXT", "EXTENDS"
+cc.hs	17	  keywordsops      = [ "-:", "=", "~", "-", ";", "*", "::", "\\/", "/\\" ]
+cc.hs	19	  opchars          = "-~:=;*\\/"
+cc.hs	21	  data ContextElement = CPat Spec
+cc.hs	24	  data PatElem        = Pr Rule
+cc.hs	35	  pArchitecture     = Arch <$> pList1 pContext
+cc.hs	38	  pContext          = rebuild <$ pKey "CONTEXT" <*> pConid <*>
+cc.hs	64	                      gc <$> pKey_pos "GLUE" <*> pMorph <* pKey "=" <*> pExpr
+cc.hs	66	                       hc antc pos cons expl = Hc antc pos cons expl (anything,anything) 0
+cc.hs	67	                       dc defd pos expr expl = Dc defd pos expr expl (anything,anything) 0
+cc.hs	68	                       gc pos pm pf = Gc pos pm pf (anything,anything) 0
+cc.hs	75	  pExpression       = pList1Sep (pKey ";") pTerm
+cc.hs	81	                       tm pm ""  = Tm pm (anything,anything)
+cc.hs	82	                       tm pf "~" = Tf pf (anything,anything)
+cc.hs	83	                       tc pc ""  = Tc pc (anything,anything)
+cc.hs	84	                       tc pc "~" = Tc (flp pc) (anything,anything)
+cc.hs	85	                                   where flp (F  ts sgn) = F  (reverse (map f1p ts)) sgn
+cc.hs	86	                                         flp (Fi fs sgn) = Fi (map flp fs)           sgn
+cc.hs	87	                                         flp (Fu fs sgn) = Fu (map flp fs)           sgn
+cc.hs	88	                                         f1p (Tm m sgn)  = Tf m                      sgn
+cc.hs	89	                                         f1p (Tf m sgn)  = Tm m                      sgn
+cc.hs	90	                                         f1p (Tc f sgn)  = Tc (flp f)                sgn
+cc.hs	95	  pExpr             = f <$> pList1Sep (pKey "\\/") pFactorI
+cc.hs	96	                      where f [x] = x
+cc.hs	102	  pFactorI          = f <$> pList1Sep (pKey "/\\") pFactor
+cc.hs	103	                      where f [x] = x
+cc.hs	109	  pFactor           = f <$> pList1Sep (pKey ";") pTerm
+cc.hs	110	                      where f [Tc f' _] = f'
+cc.hs	111	                            f ts        = F ts (anything,anything)
+cc.hs	116	                      where rebuild (nm,pos) atts = Mph nm pos atts (anything,anything)
+cc.hs	137	  pMorphism         = rebuild <$> pVarid <*> pKey_pos "::" <*> pConcept <* pKey "*" <*> pConcept
+cc.hs	141	                             = Mor nm s t props (pr!!0) (pr!!1) (pr!!2) content pos
+cc.hs	142	                               where pr = pragma++["","",""]
+cc.hs	145	  pContent          = pKey "=" *> pSpec '[' *> pListSep (pKey ";") pRecord <* pSpec ']'
+cc.hs	149	  pProps            = pSpec '['  *> pListSep (pSpec ',') pProp <* pSpec ']'
+cc.hs	154	                      where k obj str = f <$> pKey str where f _ = obj
+cc.hs	157	  pPragma           = pKey "PRAGMA" *> pList1 pString
+cc.hs	160	  pRecord           = pSpec '(' *> pListSep (pSpec ',') pString <* pSpec ')'

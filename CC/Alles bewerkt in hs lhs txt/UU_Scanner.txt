@@ -1,0 +1,96 @@
+
+UU_Scanner.hs	35	    = TkSymbol
+UU_Scanner.hs	50	  type Column = Int
+UU_Scanner.hs	51	  type Filename   = String
+UU_Scanner.hs	57	    --(Tok TkOp       ""      l _ _) ==  (Tok TkOp       ""      r _ _) =  l == r
+UU_Scanner.hs	58	    --(Tok TkOp       ""      l _ _) ==  (Tok TkOp       r       _ _ _) =  l == r
+UU_Scanner.hs	59	    --(Tok TkOp       l       _ _ _) ==  (Tok TkOp       ""      r _ _) =  l == r
+UU_Scanner.hs	60	    (Tok ttypel     stringl _ _ _) ==  (Tok ttyper     stringr _ _ _) =  ttypel == ttyper && stringl == stringr
+UU_Scanner.hs	64	    (Tok ttypel     stringl _ _ _ ) <= (Tok ttyper    stringr _ _  _ )
+UU_Scanner.hs	65	        =     ttypel <  ttyper
+UU_Scanner.hs	67	  maybeshow (Pos 0 0) fn =  ""
+UU_Scanner.hs	68	  maybeshow (Pos l c) fn =  " at line " ++ show l
+UU_Scanner.hs	71	  initPos = Pos 1 1
+UU_Scanner.hs	72	  noPos = Pos 0 0
+UU_Scanner.hs	73	  advl i (Pos l c) = (Pos (l+i) 1)
+UU_Scanner.hs	74	  advc i (Pos l c) = (Pos l (c+i))
+UU_Scanner.hs	75	  adv pos c = case c of
+UU_Scanner.hs	79	  tabWidth c = 8 - ((c-1) `mod` 8)
+UU_Scanner.hs	81	      = showString
+UU_Scanner.hs	98	    deleteCost (Tok TkKeyword _ _ _ _) = 10
+UU_Scanner.hs	99	    deleteCost _                       = 5
+UU_Scanner.hs	100	  keyToken tp key pos fn = Tok tp key key   pos fn
+UU_Scanner.hs	101	  token  tp value pos fn = Tok tp ""  value pos fn
+UU_Scanner.hs	102	  errToken = token TkError
+UU_Scanner.hs	105	    = doScan pos input
+UU_Scanner.hs	106	     locatein :: Ord a => [a] -> a -> Bool
+UU_Scanner.hs	107	     locatein es = isJust . btLocateIn compare (tab2tree (sort es))
+UU_Scanner.hs	108	     iskw     = locatein keywordstxt
+UU_Scanner.hs	109	     isop     = locatein keywordsops
+UU_Scanner.hs	110	     isSymbol = locatein specchars
+UU_Scanner.hs	111	     isOpsym  = locatein opchars
+UU_Scanner.hs	118	     doScan p ('{':'-':s)  = lexNest fn doScan (advc 2 p) s
+UU_Scanner.hs	120	       = let (s,swidth,rest) = scanString ss
+UU_Scanner.hs	124	       = let (mc,cwidth,rest) = scanChar ss
+UU_Scanner.hs	131	       = case ss of
+UU_Scanner.hs	134	                                     let (name,p1,rest) = scanIdent (advc 2 p) s
+UU_Scanner.hs	135	                                         ident = c:name
+UU_Scanner.hs	137	                                                  head rest /= '`' = errToken "Unterminated infix identifier" p fn
+UU_Scanner.hs	151	           = let (name', p', s')    = scanIdent (advc 1 p) s
+UU_Scanner.hs	152	                 name               = c:name'
+UU_Scanner.hs	153	                 tok                = if iskw name
+UU_Scanner.hs	167	      = f keywordsops cs ""
+UU_Scanner.hs	169	         f ops (e:s) op = if and (map null ops) then (op,e:s)
+UU_Scanner.hs	188	   where lexNest' c p ('-':'}':s) = c (advc 2 p) s
+UU_Scanner.hs	189	         lexNest' c p ('{':'-':s) = lexNest' (lexNest' c) (advc 2 p) s
+UU_Scanner.hs	190	         lexNest' c p (x:s)       = lexNest' c (adv p x) s
+UU_Scanner.hs	197	                      (str,w,r)  = scanString cr
+UU_Scanner.hs	198	                      str' = maybe "" (:str) ch
+UU_Scanner.hs	201	  getchar s	('\n':_ ) = (Nothing,0,s )
+UU_Scanner.hs	202	  getchar s	('\t':_ ) = (Nothing,0,s)
+UU_Scanner.hs	203	  getchar s	('\'':_ ) = (Nothing,0,s)
+UU_Scanner.hs	204	  getchar s	('"' :_ ) = (Nothing,0,s)
+UU_Scanner.hs	209	                                        val = case tp of
+UU_Scanner.hs	213	                                    in  if val >= 0 && val <= 255
+UU_Scanner.hs	219	    where cntrChars = [('a','\a'),('b','\b'),('f','\f'),('n','\n'),('r','\r'),('t','\t')
+UU_Scanner.hs	226	    where (hs:ts) = s
+UU_Scanner.hs	227	          const0 = (TkInteger10, "0",1,s)
+UU_Scanner.hs	228	          num10  = let (n,r) = span isDigit cs
+UU_Scanner.hs	230	          num16   = readNum isHexaDigit  ts TkInteger16
+UU_Scanner.hs	231	          num8    = readNum isOctalDigit ts TkInteger8
+UU_Scanner.hs	233	            = let nrs	(n,rs) = span p ts
+UU_Scanner.hs	236	  isOctalDigit d = d >= '0' && d <= '7'
+UU_Scanner.hs	241	  gsym kind val val2 = get_tok_val <$> pSym (Tok kind val val2 noPos "")
+UU_Scanner.hs	243	    pTextnm, pTextln, pInteger  :: IsParser p Token => p String
+UU_Scanner.hs	244	  pOper name     =   gsym TkOp        name      name
+UU_Scanner.hs	245	  pKey  keyword  =   gsym TkKeyword   keyword   keyword
+UU_Scanner.hs	246	  pSpec s        =   gsym TkSymbol    [s]       [s]
+UU_Scanner.hs	247	  pChar          =   gsym TkChar      ""        "\NUL"
+UU_Scanner.hs	248	  pInteger8      =   gsym TkInteger8  ""        "1"
+UU_Scanner.hs	249	  pInteger10     =   gsym TkInteger10 ""        "1"
+UU_Scanner.hs	250	  pInteger16     =   gsym TkInteger16 ""        "1"
+UU_Scanner.hs	251	  pVarid         =   gsym TkVarid     ""        "?lc?"
+UU_Scanner.hs	252	  pConid         =   gsym TkConid     ""        "?uc?"
+UU_Scanner.hs	253	  pTextnm        =   gsym TkTextnm    ""        ""
+UU_Scanner.hs	254	  pTextln        =   gsym TkTextln    ""        ""
+UU_Scanner.hs	255	     :: IsParser p Token => p String
+UU_Scanner.hs	256	  pComma  = pSpec ','
+UU_Scanner.hs	257	  pSemi   = pSpec ';'
+UU_Scanner.hs	258	  pOParen = pSpec '('
+UU_Scanner.hs	259	  pCParen = pSpec ')'
+UU_Scanner.hs	260	  pOBrack = pSpec '['
+UU_Scanner.hs	261	  pCBrack = pSpec ']'
+UU_Scanner.hs	262	  pOCurly = pSpec '{'
+UU_Scanner.hs	263	  pCCurly = pSpec '}'
+UU_Scanner.hs	264	  pSemics ::  IsParser p Token => p a -> p [a]
+UU_Scanner.hs	265	  pParens ::  IsParser p Token => p a -> p a
+UU_Scanner.hs	266	  pBracks ::  IsParser p Token => p a -> p a
+UU_Scanner.hs	267	  pCurly  ::  IsParser p Token => p a -> p a
+UU_Scanner.hs	268	  pSemics  = pListSep pSemi
+UU_Scanner.hs	269	  pParens  = pPacked pOParen pCParen
+UU_Scanner.hs	270	  pBracks  = pPacked pOBrack pCBrack
+UU_Scanner.hs	271	  pCurly   = pPacked pOCurly pCCurly
+UU_Scanner.hs	272	  pBracks_pCommas :: IsParser p Token => p a -> p [a]
+UU_Scanner.hs	273	  pCurly_pSemics  :: IsParser p Token => p a -> p [a]
+UU_Scanner.hs	274	  pBracks_pCommas = pBracks.pCommas
+UU_Scanner.hs	275	  pCurly_pSemics  = pCurly .pSemics

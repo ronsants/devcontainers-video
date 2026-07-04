@@ -1,0 +1,35 @@
+
+Auxiliaries.hs@31@  mor2name :: Identified a => a -> String
+Auxiliaries.hs@32@  mor2name       = dePoint.mumble.name
+Auxiliaries.hs@36@  dePoint str = if head str=='.' then tail str else
+Auxiliaries.hs@37@                if last str=='.' then init str else str
+Auxiliaries.hs@38@  strip = filter isAlphaNum
+Auxiliaries.hs@39@  conceptForm (c:cs) = strip (toUpper c: map toLower cs)
+Auxiliaries.hs@40@  conceptForm "" = ""
+Auxiliaries.hs@48@   where exceptions = [("mouse","mice"),("sheep","sheep"),("Mouse","Mice"),("Sheep","Sheep")]
+Auxiliaries.hs@53@   eleM     :: Eq b => b -> a b -> Bool
+Auxiliaries.hs@54@   uni, isc :: Eq b => a b -> a b -> a b
+Auxiliaries.hs@55@   (>-)     :: Eq b => a b -> a b -> a b
+Auxiliaries.hs@56@   empty    :: Eq b => a b
+Auxiliaries.hs@57@   elems    :: Eq b => a b -> [b]
+Auxiliaries.hs@60@   eleM        = any . (==)
+Auxiliaries.hs@65@   elems       = id
+Auxiliaries.hs@70@  commaAnd [a,b,c]= a++", "++b++", and "++c
+Auxiliaries.hs@71@  commaAnd [a,b]  = a++" and "++b
+Auxiliaries.hs@72@  commaAnd [a]    = a
+Auxiliaries.hs@73@  commaAnd (a:as) = a++", "++commaAnd as
+Auxiliaries.hs@76@  commaEng str [a,b,c]= a++", "++b++", "++str++" "++c
+Auxiliaries.hs@77@  commaEng str [a,b]  = a++" "++str++" "++b
+Auxiliaries.hs@78@  commaEng str [a]    = a
+Auxiliaries.hs@79@  commaEng str (a:as) = a++", "++commaEng str as
+Auxiliaries.hs@82@  commaEn [a,b,c]= a++", "++b++" en "++c
+Auxiliaries.hs@83@  commaEn [a,b]  = a++" en "++b
+Auxiliaries.hs@84@  commaEn [a]    = a
+Auxiliaries.hs@85@  commaEn (a:as) = a++", "++commaEn as
+Auxiliaries.hs@89@  enumerate [x]= x
+Auxiliaries.hs@109@  fst3 (a,b,c) = a
+Auxiliaries.hs@110@  snd3 (a,b,c) = b
+Auxiliaries.hs@111@  thd3 (a,b,c) = c
+Auxiliaries.hs@116@sort = sort' id
+Auxiliaries.hs@121@sord = sort.rd
+Auxiliaries.hs@126@Oppassen met sord', want er geldt niet  (voor alle f: sord' f = sort' f.rd)   !!!

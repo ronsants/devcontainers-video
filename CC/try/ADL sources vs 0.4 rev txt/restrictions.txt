@@ -1,0 +1,102 @@
+
+restrictions.hs@25@   = if null ics then ((\s->(\t->head (frels s t))), exclVars) else
+restrictions.hs@28@      res       = pars3 (exclVars++ivs) (split ts)
+restrictions.hs@29@      frels s t = if null rvws then error ("Fatal: frels "++show s++" "++show t++" is empty.") else rvws
+restrictions.hs@31@      ics       = [if v `order` w then v `lub` w else error("Fatal: assembleFIns")
+restrictions.hs@33@      ivs       = mkVar exclVars ics
+restrictions.hs@40@    showsPrec p r = showString (charshow r)
+restrictions.hs@43@   = charVars "For all" vars ++ charshow restr
+restrictions.hs@45@   = charVars "Exists" vars  ++ charshow restr
+restrictions.hs@47@   = charshow antc++" ==> "  ++ charshow conseq
+restrictions.hs@49@   = charshow lhs++" <=> "   ++ charshow rhs
+restrictions.hs@51@   = if null rs then "" else
+restrictions.hs@54@   = if null rs then "" else
+restrictions.hs@56@  charshow (Not rs) = "not "++charshow rs
+restrictions.hs@58@   = (if compl then "" else "not(")++
+restrictions.hs@63@   = (if compl then "" else "not(")++
+restrictions.hs@68@   = (if compl then "" else "not(")++
+restrictions.hs@73@  charshow (Funs x (Id pos atts c:ms)) = charshow (Funs x ms)
+restrictions.hs@74@  charshow (Funs x (m:ms))             = charshow (Funs (name m++"("++x++")") ms)
+restrictions.hs@77@   = if null vs then "" else
+restrictions.hs@96@  r = Ru c (F [Tm mdid True])
+restrictions.hs@103@  s = Ru c (F [Tf bevat1 True     -- (C "Handeling",C "Processtap")
+restrictions.hs@122@  test1 = Ru 'E' inBD posNone
+restrictions.hs@136@*Restrictions assemble (==) test1
+restrictions.hs@152@  test2 = Ru 'E' inBD posNone 
+restrictions.hs@172@  tryRule = Ru 'E' auth posNone
+restrictions.hs@183@Main assemble (==) r
+restrictions.hs@184@For all a::Actor; e::Event: a did e == creation(a) ltEq occured(e)
+restrictions.hs@186@Main rule ([ex did] ==> [ex creation, ex ltEq, inv occured])
+restrictions.hs@187@E [did] : Actor<--Event = E [.creation,ltEq,.occured] : (Object,Event)   
+restrictions.hs@189@Main assemble (rule ([ex did] ==> [ex creation, ex ltEq, inv occured]))
+restrictions.hs@190@For all o::Object; e::Event: o did e == .creation(o) ltEq .occured(e)
+restrictions.hs@192@Main rule ([inv creation, ex now] ==> [ex ltEq])
+restrictions.hs@193@E [.creation,.now] = E [ltEq] : (Time,Time) 
+restrictions.hs@195@Main assemble (rule ([inv creation, ex now] ==> [ex ltEq]))
+restrictions.hs@196@For all t, t'::Time; o::Object: t = .creation(o) & .now(o) = t' == t ltEq t'
+restrictions.hs@198@  main= do {putStr (show p)}
+restrictions.hs@203@  p = Ru 'E'
+restrictions.hs@207@  expr = F tss
+restrictions.hs@208@  tss  =   [ Tm
+restrictions.hs@213@  expr1 =       F [ Tm
+restrictions.hs@218@  expr2 =       F [ Tm
+restrictions.hs@225@  assemble (==) p
+restrictions.hs@226@=      {    assembleF (==) ["a","a'"] expr1
+restrictions.hs@227@         =
+restrictions.hs@236@   = Forall [(s,sourc),(t,targ)]
+restrictions.hs@239@      (ra,avars) = assembleF [s,t] defd
+restrictions.hs@240@      (rc,cvars) = assembleF avars expr
+restrictions.hs@246@      (ra,avars) = assembleF [s,t] antc
+restrictions.hs@247@      (rb,bvars) = assembleF [s] cons
+restrictions.hs@248@      (rc,cvars) = assembleF avars cons
+restrictions.hs@250@      transform (Forall vs (Implies (Exists es antc) cons)) = Forall (vs++es) (Implies antc cons)
+restrictions.hs@251@      transform expr = expr
+restrictions.hs@255@   = if null ics then ((\s->(\t->head (frels s t))), exclVars) else
+restrictions.hs@258@      res       = pars3 (exclVars++ivs) (split ts)
+restrictions.hs@260@      ics       = [if v `order` w then v `lub` w else error("Fatal: assembleF")
+restrictions.hs@262@      ivs       = mkVar exclVars ics
+restrictions.hs@272@      = (Rel r (head s) t, exV, source (head r), target (last t)): pars3 exV ts
+restrictions.hs@274@  pars3 exV ts = pars2 exV ts -- for lists shorter than 3
+restrictions.hs@284@  pars2 exV ts = pars1 exV ts -- for lists shorter than 2
+restrictions.hs@286@   = (restr, exV', source (head r), target (last r)): pars3 exV ts
+restrictions.hs@287@     where (restr,exV') = pars0 exV r
+restrictions.hs@294@                      where [Tc f c] = r
+restrictions.hs@302@   where ps = multiplicities s
+restrictions.hs@303@  denote (Tm (Id _ _ _) _) = Rn
+restrictions.hs@309@   where ps = multiplicities s
+restrictions.hs@310@  denote (Tf (Id _ _ _) _) = Rn
+restrictions.hs@311@  denote (Tc _ _)                   = Wrap
+restrictions.hs@312@  denotes = denote . head
+restrictions.hs@317@  split [t] = [[t]]
+restrictions.hs@319@   = if denote t `eq` Wrap      then (t:spl):spls else
+restrictions.hs@323@       spl:spls = split (t':ts)
+restrictions.hs@324@       Flr `eq` Flr = True
+restrictions.hs@325@       Frl `eq` Frl = True
+restrictions.hs@326@       x `eq` y     = False
+restrictions.hs@332@     = charVars "&forall;" {- "<IMG SRC=\"treemenutils/forall.gif\" ALT=\"For all \">" -} vars ++ hshow restr
+restrictions.hs@334@     = charVars "&exist;" {- "<IMG SRC=\"treemenutils/exists.gif\" ALT=\"Exists \">" -} vars  ++ hshow restr
+restrictions.hs@336@     = "<BR />\n"++hshow antc++" <IMG SRC=\"treemenutils/arright.gif\" ALT=\"implies \"> "  ++ hshow cons
+restrictions.hs@338@     = "<BR />\n"++hshow lhs++" <IMG SRC=\"treemenutils/arboth.gif\" ALT=\"Equivalent \"> "   ++ hshow rhs
+restrictions.hs@339@    hshow (Conj [r]) = hshow r
+restrictions.hs@341@     = if null rs then "" else
+restrictions.hs@342@       chain " &and; " {- " <IMG SRC=\"treemenutils/and.gif\" ALT=\"and \"> " -} (map hsh rs)
+restrictions.hs@343@    hshow (Disj [r]) = hshow r
+restrictions.hs@345@     = if null rs then "" else
+restrictions.hs@346@       chain " &or; " {- " <IMG SRC=\"treemenutils/or.gif\" ALT=\"or \"> " -} (map hsh rs)
+restrictions.hs@347@    hshow (Not rs) = " &not; " {- "<IMG SRC=\"treemenutils/not.gif\" ALT=\"not \"> " -} ++hshow rs
+restrictions.hs@349@     = "<A TITLE=\""++helptext d left m c right++"\">"++
+restrictions.hs@353@     = "<A TITLE=\""++helptext c left m d right++"\">"++
+restrictions.hs@357@     = error "Rel lhs (Tc f compl) rhs"
+restrictions.hs@359@    hshow (Funs x (Id _ _ _:ms)) = hshow (Funs x ms)
+restrictions.hs@360@    hshow (Funs x (m:ms))        = hshow (Funs (hshow m++"("++x++")") ms)
+restrictions.hs@363@  helptext a ams (Id pos atts nm)  b bms = funnotate a ams ++ " = " ++ funnotate b bms
+restrictions.hs@364@  helptext a ams (Mph _ _ _ _ s) b bms = applyM s (funnotate a ams) (funnotate b bms)++shCard s
+restrictions.hs@371@  funnotate x (Id _ _ _:ms) = funnotate x ms
+restrictions.hs@372@  funnotate x (m:ms)        = funnotate (hshow m++"("++x++")") ms
+restrictions.hs@375@   = "("++hshow r++")"
+restrictions.hs@377@   = "("++hshow r++")"
+restrictions.hs@378@  hsh r@(Conj [r']) = hshow r'
+restrictions.hs@380@   = "("++hshow r++")"
+restrictions.hs@381@  hsh r@(Disj [r']) = hshow r'
+restrictions.hs@383@   = "("++hshow r++")"
+restrictions.hs@384@  hsh r = hshow r

@@ -1,0 +1,22 @@
+
+UU_BinaryTrees.hs	18	   = Node (BinSearchTree av) av (BinSearchTree av)
+UU_BinaryTrees.hs	21	  tab2tree tab = tree
+UU_BinaryTrees.hs	24	    sl2bst 0 list     = (Nil   , list)
+UU_BinaryTrees.hs	26	     = let 
+UU_BinaryTrees.hs	27	        ll = (n - 1) `div` 2 ; rl = n - 1 - ll
+UU_BinaryTrees.hs	28	        (lt,a:list1) = sl2bst ll list 
+UU_BinaryTrees.hs	29	        (rt,  list2) = sl2bst rl list1
+UU_BinaryTrees.hs	32	  btFind     = btLookup fst snd
+UU_BinaryTrees.hs	33	  btLocateIn = btLookup id id
+UU_BinaryTrees.hs	35	    =  let comp = cmp (key kv)
+UU_BinaryTrees.hs	36	           r    = val kv
+UU_BinaryTrees.hs	41	    =  let comp = cmp (key kv)
+UU_BinaryTrees.hs	42	           findleft = btLookup key val cmp left
+UU_BinaryTrees.hs	43	           r    = val kv
+UU_BinaryTrees.hs	48	    =  let comp      = cmp (key kv)
+UU_BinaryTrees.hs	49	           findright = btLookup key val cmp right
+UU_BinaryTrees.hs	50	           r         = val kv
+UU_BinaryTrees.hs	55	    =  let comp = cmp (key kv)
+UU_BinaryTrees.hs	56	           findleft  = btLookup key val cmp left
+UU_BinaryTrees.hs	57	           findright = btLookup key val cmp right
+UU_BinaryTrees.hs	58	           r    = val kv

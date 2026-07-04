@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<META name="author" content="S.Joosten">
+<META name="email" content="stef.joosten@ou.nl">
+<TITLE>Code for Metamodels navigator</TITLE>
+<SCRIPT type="text/javascript" src="treemenutils/mtmcode.js"></SCRIPT>
+<SCRIPT type="text/javascript">
+// Morten's JavaScript Tree Menu
+// written by Morten Wang <morten@treemenu.com> (c) 1998-2000
+// This is version 2.2.6, dated 2000-03-30
+// The script is freely distributable
+// It may be used (and modified) as you wish, but retain this message
+// For more information about the menu visit its home page
+// http://www.treemenu.com/
+var MTMTableWidth = "100%";
+var MTMenuFrame = "context";
+var MTMSubsGetPlus = false;
+var MTMEmulateWE = true;
+var MTMenuImageDirectory = "treemenutils/";
+var MTMBGColor = "#FFFFBB";
+var MTMBackground = "";
+var MTMTextColor = "#000000";
+var MTMLinkColor = "#AA0000";
+var MTMAhoverColor = "#000000";
+var MTMTrackColor ="#000000";
+var MTMSubExpandColor = "#666699";
+var MTMSubClosedColor = "#666699";
+var MTMRootIcon = "menu_new_root.gif";
+var MTMenuText = "Context tree";
+var MTMRootColor = "#000000";
+var MTMRootFont = "Arial, Helvetica, sans-serif";
+var MTMRootCSSize = "84%";
+var MTMRootFontSize = "-1";
+var MTMenuFont = "Arial, Helvetica, sans-serif";
+var MTMenuCSSize = "84%";
+var MTMenuFontSize = "-1";
+var MTMLinkedSS = false;
+var MTMSSHREF = "menu.css";
+var MTMSubsAutoClose = false;
+var MTMTimeOut = 15;
+var MTMIconList = null;
+MTMIconList = new IconList();
+MTMIconList.addIcon(new MTMIcon("menu_link_external.gif", "http://", "pre"));
+MTMIconList.addIcon(new MTMIcon("menu_link_pdf.gif", ".pdf", "post"));
+
+//menu menu
+
+var menu = null;
+menu = new MTMenu();
+menu.MTMAddItem(new MTMenuItem("Metamodels", "Metamodels.html", "concepts"));
+
+//metamodels menu
+
+var JS_metamodels = null;
+JS_metamodels = new MTMenu();
+menu.items[0].MTMakeSubmenu(JS_metamodels);
+</SCRIPT>
+</HEAD>
+<BODY onload="MTMStartMenu()" bgcolor=#FFFFBB link=#AA0000 alink=#AA0000 hlink=#AA0000></BODY>
+</HTML>

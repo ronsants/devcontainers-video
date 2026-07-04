@@ -1,0 +1,159 @@
+; Thu May 26 12:27:31 CEST 2005
+; 
+;+ (version "3.0")
+;+ (build "Build 141")
+
+([GCO_Instance_10040] of  Knowledge+Management+System
+
+	(name "The MEMO Architecture")
+	(properties
+		"Supply a conceptual level"
+		"Reuse the existing K"
+		"Convenient and save adaptation to individual needs"
+		"Intuitive understanding"
+		"Support of multiple perspectives"
+		"Integration of perspectives"))
+
+([GCO_Instance_23] of  Real-Time+data+conferencing
+
+	(enterprise+application
+		[GCO_Instance_40]
+		[GCO_Instance_38]
+		[GCO_Instance_42])
+	(name "Net Meeting"))
+
+([GCO_Instance_25] of  Non+real-time+data+conferencing
+
+	(enterprise+application
+		[GCO_Instance_40]
+		[GCO_Instance_38]
+		[GCO_Instance_42])
+	(name "Collabra")
+	(purposes
+		"enhance the deployment of knowledge into practice"
+		"knowledge integration"))
+
+([GCO_Instance_29] of  Groupware+Services
+
+	(enterprise+application
+		[GCO_Instance_42]
+		[GCO_Instance_38]
+		[GCO_Instance_40])
+	(name "SuiteSpot servers")
+	(purposes
+		"enhance the deployment of knowledge into practice"
+		"knowledge integration"))
+
+([GCO_Instance_37] of  Enterprise+Aspects
+
+	(name "Businesse Strategies"))
+
+([GCO_Instance_38] of  Enterprise+Aspects
+
+	(name "Products and Services"))
+
+([GCO_Instance_39] of  Enterprise+Aspects
+
+	(name "Business Processes"))
+
+([GCO_Instance_40] of  Enterprise+Aspects
+
+	(name "Organizational Structures"))
+
+([GCO_Instance_41] of  Enterprise+Aspects
+
+	(name "Policies and Procedures"))
+
+([GCO_Instance_42] of  Enterprise+Aspects
+
+	(name "Culture and Values"))
+
+([GCO_Instance_43] of  Enterprise+Aspects
+
+	(name "Information Systems"))
+
+([GCO_Instance_44] of  Enterprise+Firm
+
+	(business+view New+Vision)
+	(model+enterprise s.e.f)
+	(type "software experience factory"))
+
+([GCO_Instance_48] of  External+knowledge+repositories
+
+	(enterprise+application
+		[GCO_Instance_37]
+		[GCO_Instance_39]
+		[GCO_Instance_43]
+		[GCO_Instance_40])
+	(knowledge-base ontology-based)
+	(model+repositories combination-of-both)
+	(name "business intelligence")
+	(purposes
+		"enhance the deployment of knowledge into practice"
+		"knowledge integration"))
+
+([GCO_Instance_50] of  Structured+Internal+knowledge+repositories
+
+	(enterprise+application
+		[GCO_Instance_43]
+		[GCO_Instance_37]
+		[GCO_Instance_39]
+		[GCO_Instance_41]
+		[GCO_Instance_40]
+		[GCO_Instance_42])
+	(knowledge-base case-based)
+	(model+repositories person-to-person)
+	(name "reports")
+	(purposes
+		"enhance the deployment of knowledge into practice"
+		"knowledge integration"))
+
+([GCO_Instance_51] of  Informal+Internal+knowledge+repositories
+
+	(enterprise+application
+		[GCO_Instance_43]
+		[GCO_Instance_40])
+	(knowledge-base case-based)
+	(model+repositories person-to-repository-to-person)
+	(name "discussion databases")
+	(purposes
+		"enhance the deployment of knowledge into practice"
+		"knowledge integration"))
+
+([GCO_Instance_56] of  KM+tools
+
+	(enterprise+application
+		[GCO_Instance_38]
+		[GCO_Instance_43])
+	(goals "create new knowledge")
+	(name "commonKADS"))
+
+([GCO_Instance_58] of  KM+tools
+
+	(enterprise+application
+		[GCO_Instance_40]
+		[GCO_Instance_38])
+	(goals
+		"modelling knowledge"
+		"create new knowledge")
+	(name "Protégé 2000"))
+
+([GCO_Instance_59] of  KM+tools
+
+	(enterprise+application [GCO_Instance_40])
+	(goals
+		"modelling knowledge"
+		"knowledge representation")
+	(name "UML"))
+
+([GCO_Instance_60] of  KM+tools
+
+	(enterprise+application
+		[GCO_Instance_40]
+		[GCO_Instance_43])
+	(goals "knowledge modelling")
+	(name "Multi-Perspective Modelling"))
+
+([GCO_Instance_71] of  Frames
+
+	(name "Car's Example"))

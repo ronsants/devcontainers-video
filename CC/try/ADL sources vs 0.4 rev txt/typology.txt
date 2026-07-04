@@ -1,0 +1,41 @@
+
+typology.hs@15@  data Inheritance a = Isa [(a,a)] [a] deriving Show
+typology.hs@17@  type IsaPath a = [a]
+typology.hs@19@  akin :: Eq a => IsaPath a -> IsaPath a -> Bool
+typology.hs@23@  kin :: Eq a => IsaPath a -> IsaPath a -> Bool
+typology.hs@27@  sub :: Eq a => IsaPath a -> IsaPath a -> Bool
+typology.hs@31@  data Typology a = Typ [IsaPath a] deriving Show
+typology.hs@33@  instance (Eq a,Show a) = Show (Typology a) where
+typology.hs@35@    = showString . chain "\n" . map show . makeTrees
+typology.hs@40@  genEq, spcEq, gen, spc :: Eq a => Typology a -> a->a->Bool
+typology.hs@46@  f l r ps = not (null p2)
+typology.hs@48@    p1 = dropWhile (/=l) ps
+typology.hs@49@    p2 = dropWhile (/=r) p1
+typology.hs@51@  makeIsa :: Eq a => Typology a -> Inheritance a
+typology.hs@59@=
+typology.hs@62@  class Eq a => Typologic a where
+typology.hs@64@   match       = (==)
+typology.hs@69@    p `mul` p' == pth  implies that length p+length p' == 1+length pth
+typology.hs@71@   typology :: Show a => Inheritance a -> Typology a
+typology.hs@79@                            where pn = paths++new
+typology.hs@89@    let len p = length p-1, being the number of ISA links of IsaPath p
+typology.hs@91@           =
+typology.hs@93@           =                                               { let pn=paths++new }
+typology.hs@95@           = 
+typology.hs@98@                                         let  n' = 2*n                          }
+typology.hs@102@  compress :: Eq a => (IsaPath a->IsaPath a->Bool) -> [IsaPath a] -> [IsaPath a]
+typology.hs@104@   = eqCl paths
+typology.hs@115@  uniT :: Eq a = Typology a -> Typology a -> Typology a
+typology.hs@116@  uniI :: Eq a = Inheritance a -> Inheritance a -> Inheritance a
+typology.hs@119@   e `eleM` isa              = e `elem` (elems isa)
+typology.hs@122@   Isa rx cx `uni` Isa ry cy = Isa (rd (rx++ry)) (rd (cx++cy))
+typology.hs@123@   Isa rx cx `isc` Isa ry cy = Isa (rx `isc` ry) (cx `isc` cy)
+typology.hs@124@   Isa rx cx >- Isa ry cy = Isa (rx>-ry) (cx>-cy)
+typology.hs@129@   elems (Typ paths) = rd (concat paths)
+typology.hs@136@  makeTrees :: Eq a => Typology a -> [Classification a]
+typology.hs@151@                     , root cl==root cl']
+typology.hs@159@  makeTypo :: Eq a => [Classification a] -> Typology a
+typology.hs@160@  makeTypo trees = Typ (paths trees)
+typology.hs@169@  tt = (makeTypo . makeTrees . typology) (Isa [(1,178),(1,10),(1,12),(10,178)] [3])
+typology.hs@182@  trees :: (Eq a, Show a) => Typology a -> IO ()
+typology.hs@183@  trees = putStr . chain "\n" . map show . makeTrees

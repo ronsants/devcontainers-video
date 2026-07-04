@@ -1,0 +1,13 @@
+
+html.hs	7	  htmlItalic str = "<I>"++str++"</I>"
+html.hs	8	  htmlBold str   = "<B>"++str++"</B>"
+html.hs	11	   = "<FRAME Name="++show nm++" SRC="++show (htmlname src++".html")++" NORESIZE FRAMEBORDER=\"No\">"
+html.hs	17	   = chain "\n"
+html.hs	19	      , "<META name=\"author\" content=\"S.Joosten\">"
+html.hs	20	      , "<META name=\"email\" content=\"stef.joosten	ou.nl\">" ] ++
+html.hs	26	   = chain "\n" ["<BODY bgcolor=#FFFFBB link=#AA0000 alink=#AA0000 hlink=#AA0000>",body,"</BODY>"]
+html.hs	29	   = "<IMG src=\""++imgname++"\" border=\"0\" vspace=\"0\" hspace=\"0\" />"
+html.hs	65	   = chain "\n"
+html.hs	68	          concat [ "<TD width="++show p++"% bgcolor=black><b><font color=#FFFFFF>"++x++
+html.hs	70	                   "><img src=\"spacer.gif\" width=1></td>"
+html.hs	80	  avoidJSreservedwords str = "JS_"++str

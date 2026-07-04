@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<META name="author" content="S.Joosten">
+<META name="email" content="stef.joosten@ou.nl">
+<TITLE>Code for Metamodels concepts navigator</TITLE>
+<SCRIPT type="text/javascript">
+function SwitchPat(value)
+ { parent.concepts.document.location.href=value+'.html'
+ ; parent.menu.document.location.href='NAV_'+value+'.html'
+ }
+function SwitchView(value)
+ { parent.concepts.document.location.href=value+'.html' }
+</SCRIPT>
+</HEAD>
+<BODY bgcolor=#FFFFBB link=#AA0000 alink=#AA0000 hlink=#AA0000>
+Patterns
+<BR />
+  <SELECT NAME="SwitchPattern" onChange="SwitchPat(this.value)">
+    <OPTION value="Metamodels"> All patterns
+    <OPTION value="Metamodels_Objects"> Objects
+    <OPTION value="Metamodels_Class_Diagram" selected> Class Diagram
+  </SELECT>
+</BODY>
+<P>
+<A HREF=ANALMetamodels TARGET=concepts>Analysis</A>
+
+</HTML>

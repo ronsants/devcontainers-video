@@ -1,0 +1,14 @@
+graph "Metamodels_Class_Diagram"
+   { style="filled"; color=".60 .27 1.0"
+   ; node [shape=plaintext,fontsize=12,style=bold]
+   ; edge [dir=none]
+   ; {node [shape=ellipse,style=filled,fontsize=9,font=helvetica]"Class" "Association" "String"}
+   ; "associationClassClass" [label="association"]
+   ; "lineFromAssociationClass" [label="lineFrom"]
+   ; "lineToAssociationClass" [label="lineTo"]
+   ; "nameAssociationString" [label="name"]
+   ; "Class" -- "associationClassClass" -- "Class"
+   ; "Association" -- "lineFromAssociationClass" -- "Class"
+   ; "Association" -- "lineToAssociationClass" -- "Class"
+   ; "Association" -- "nameAssociationString" -- "String"
+   }
