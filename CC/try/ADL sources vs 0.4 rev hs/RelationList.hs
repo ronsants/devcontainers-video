@@ -1,3 +1,0 @@
- module RelationList where
-
-  relationList = []

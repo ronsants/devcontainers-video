@@ -1,3 +1,0 @@
- module ConceptList where
-
-  conceptList = []
